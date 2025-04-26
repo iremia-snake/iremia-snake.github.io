@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .short-input{
+            width: 4em;
+        }
+        canvas{
+            position: fixed;
+            top:0;
+            z-index: -2;
+        }
+        form{
+            position: relative;
+            width: max-content;
+            height: 240px;
+            padding: 20px;
+            border-radius: 0 0 20px 0;
+            background-color: rgb(226, 226, 226);
+        }
+        input[type="range"], input[type="range"] *{
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+        }
+        input[type="range"]{
+            height: 0.25em;
+            border-radius: 1em;
+            box-shadow: inset 0 0 0.2em black;
+        }
+        input[type="range"]::-webkit-slider-thumb{
+            -webkit-appearance: none;
+            appearance: none;
+            background-color: rgb(67, 101, 145);
+            box-shadow: 0 0.05em 0.2em rgba(0, 0, 0, 0.5);
+            display: block;
+            width: 1em;
+            height: 1em;
+            border-radius: 50%;
+        }
+    </style>
+    <script>
+        window.onload = main;
+        function main(){
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            ctx.strokeStyle= 'black';
+            ctx.fillStyle = 'white';
+            // branch(ctx, [300, 600], 4, 80, 0.6, 180, -5, 20, 4);
+            var form = document.forms.mainform;
+            Array.from(form.elements).forEach(element => {
+                if(element.name) {
+                    showRangeValue(element);
+                }
+            });
+            var timeoutId;
+            Array.from(form.elements).forEach(element => {
+                if(element.name) {
+                    element.oninput = ()=>{
+                        showRangeValue(element);
+                        console.clear();
+                        console.log(element.name, element.value);
+                        clearTimeout(timeoutId);
+                        timeoutId = setTimeout(()=>{setBranchTrigger(element)});
+                        
+                    } 
+                }
+            });
+            
+        }
+        function showRangeValue(element){
+            element.nextElementSibling.value = element.value;
+        }
+        function setBranchTrigger(element){
+            const ctx = canvas.getContext('2d');
+            var form = document.forms.mainform;
+            clear(ctx);
+            branch(
+                ctx, 
+                [Number(form.inputPosX.value), Number(form.inputPosY.value)], 
+                form.inputSegmentCount.value, 
+                form.inputSegmentLen.value, 
+                form.inputSegmentCooficient.value, 
+                180, 
+                form.inputBowingAngle.value, 
+                Number(form.inputStickAngle.value), 
+                Number(form.inputIterationCount.value), 
+            );
+
+        }
+        function branch(context, pos, segmentCount, segmentLen, lenCooficient, angle, addAngle, diffAngle, iter){
+            iter--;
+            if(iter < 0) return;
+            var len = segmentLen * lenCooficient;
+            for(var i = 0; i < segmentCount; i++){
+                pos = line(context, pos, segmentLen, angle+addAngle*i);
+                branch(context, pos, segmentCount, len*lenCooficient, lenCooficient, angle+addAngle*i-diffAngle, addAngle, diffAngle, iter);
+                branch(context, pos, segmentCount, len*lenCooficient, lenCooficient, angle+addAngle*i+diffAngle, addAngle, diffAngle, iter);
+            }
+            pos = line(context, pos, len*lenCooficient, angle+addAngle*(i-1));
+            branch(context, pos, segmentCount, len*lenCooficient, lenCooficient, angle+addAngle*(i-0.5), addAngle, diffAngle, iter);
+        }
+        function gear(ctx){
+            var n = 60;
+            var a = 7;
+            var addDeg = 0;
+            setInterval(()=>{
+                clear(ctx);
+                for(var i = 0; i < n; i++){
+                    line(ctx, 300, 300, 140+Math.cos((i/180*Math.PI*a+addDeg/50)*360/n)*12, i*360/n);
+                }
+                addDeg++;
+            },1000/60);
+        }
+        function clear(ctx){
+            ctx.fillRect(0,0,ctx.canvas.width, ctx.canvas.height);
+        }
+        function line(context, pos, len, deg){
+            context.beginPath();
+            context.moveTo(pos[0], pos[1]);
+            var rad = deg / 180 * Math.PI;
+            var newPos = [pos[0] + Math.sin(rad)*len, pos[1] + Math.cos(rad)*len];
+            context.lineTo(newPos[0], newPos[1]);
+            context.stroke();
+            return newPos;
+        }
+    </script>
+</head>
+<body>
+    <form action="" name="mainform">
+        <table>
+            <th colspan="2">
+                параметры ветки
+            </th>
+            <tr>
+                <td><p>position</p></td>
+                <td>
+                    <label for="">X</label>
+                    <input type="range" name="inputPosX" min="0" max="600" class="short-input"><output></output>
+                    <label for="">Y</label>
+                    <input type="range" name="inputPosY" min="0" max="600" class="short-input" value="600"><output></output>
+                </td>
+            </tr>
+            <tr>
+                <td><label for="">Количество сегментов</label></td>
+                <td>
+                    <input type="range" name="inputSegmentCount" min="0" max="20" value="4"></input><output></output>
+                </td>
+            </tr>
+            <tr>
+                <td><label for="">Длина сегмента</label></td>
+                <td>
+                    <input type="range" name="inputSegmentLen" min="0" max="200" value="80"></input><output></output>
+                </td>
+            </tr>
+            <tr>
+                <td><label for="">Сооотношение боковой ветви к сегменту</label></td>
+                <td>
+                    <input type="range" name="inputSegmentCooficient" min="0" max="1" step="0.01" value="0.6"></input><output></output>
+                </td>
+            </tr>
+            <tr>
+                <td><label for="">наклон</label></td>
+                <td>
+                    <input type="range" name="inputBowingAngle" min="-180" max="180" value="-5" step="0.1"><output></output>
+                </td>
+            </tr>
+            <tr>
+                <td><label for="">пушистость</label></td>
+                <td>
+                    <input type="range" name="inputStickAngle" min="0" max="180" value="20"><output></output>
+                </td>
+            </tr>
+            <tr>
+                <td><label for="">итерации</label></td>
+                <td>
+                    <input type="range" name="inputIterationCount" min="0" max="10" value="4"><output></output>
+                </td>
+            </tr>
+        </table>
+        
+    </form>
+    <canvas id="canvas" width="600" height="600">
+        Your browser doesn't appear to support the HTML5
+        <code>&lt;canvas&gt;</code> element.
+    </canvas>
+</body>
+</html>

@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Полезные ссылки</title>
+<style>
+    :root{
+        --link-color: blue;
+        --hover-color: skyblue;
+        --front-color: black;
+        --back-color: white;
+        --background: whitesmoke;
+        --shadow-color: grey;
+
+        /* --link-color: white;
+        --hover-color: var(--front-color);
+        --front-color: rgb(151, 111, 0);
+        --back-color: rgb(66, 35, 35);
+        --background: linear-gradient(black, rgb(53, 28, 28));
+        --border: none;
+        --shadow-color: transparent; */
+    }
+    *{
+        font-family: sans-serif; 
+        box-sizing: border-box;
+        /* border: 1px solid red; */
+    }
+    body{
+        background-color: whitesmoke; /* IE */
+        background: var(--background);
+        color: var(--front-color);
+    }
+    nav{
+        width: max-content;
+        margin: auto;
+    }
+    nav a{
+        display: inline-block;
+        padding-left: 1em;
+        padding-right: 1em;
+    }
+    input{
+        line-height: 2em;
+        width: clamp(300px, 20vw, 1000px);
+        height: 2em;
+        outline: none;
+        border: none;
+        box-shadow: inset 0 1px 3px var(--shadow-color);
+        background: var(--back-color);
+        color: var(--front-color);
+        font-size: 1em;
+    }
+    input:focus-visible{
+        border: 1px solid var(--shadow-color);
+        box-sizing: border-box;
+    }
+    ol{
+        box-shadow: 0px 4px 10px grey; /* IE */
+        box-shadow: 0px 4px 10px var(--shadow-color);
+        width: 40vw; /* IE */
+        width: clamp(300px, 40vw, 1000px);
+        min-height: 2em;
+        background-color: white; /* IE */
+        background: var(--back-color);
+        padding: .45em 0 .45em 2em;
+        /* list-style: none; */
+    }
+    a{
+        margin: 5px 0;
+        text-decoration: none;
+        color: var(--link-color);
+        outline: none;
+        padding: .45em 0;
+    }
+    .list a{
+        display: inline-block;
+        width: 100%;
+        
+    }
+    a:hover, a:focus{text-decoration: underline; background-color: var(--hover-color);}
+    span{
+        font-size: 0.6em;
+        display: block;
+        width: max-content;
+        max-width: 50%;
+        border: 1px solid;
+        border-width: 0 0 1px 1px;
+        padding: .5em;
+    }
+    span table{
+        border-spacing: 1em 0;
+    }
+    table{width: 100%;}
+    td{vertical-align: top;}
+    
+    img{
+        display: inline;
+        padding: 0;
+
+        margin: 5px 0;
+        width: 1em;
+        height: 1em;
+    }
+</style>
+</head>
+<body>
+    <table>
+        <tr>
+            <th colspan="2"><h2>Полезные ссылки</h2></th>
+        </tr>
+        <!-- <tr class="beta">
+            <td colspan="2">
+                <nav>
+                    <a href="#">Драйвера</a>
+                    <a href="#">Программы</a>
+                    <a href="#">Windows</a>
+                    <a href="#reset">Восстановление</a>
+                    <a href="#">Полезные Сайты</a>
+                </nav>
+            </td>
+        </tr> -->
+        <tr>
+            <td>
+                <h3>Официальные сайты с драйверами</h3>
+                <p>Поиск</p>
+                <input type="text" class="search-input">
+                <ol class="list sort-list">
+                    <li><a href="https://www.nvidia.com/ru-ru/drivers/" target="_blank">Nvidia</a></li>
+                    <li><a href="https://www.amd.com/en/support/download/drivers.html" target="_blank">Amd</a></li>
+                    <li><a href="https://www.asus.com/ru/support/download-center/" target="_blank">Asus</a></li>
+                    <li><a href="https://www.acer.com/ru-ru/support/drivers-and-manuals" target="_blank">Acer</a></li>
+                    <li><a href="https://www.gigabyte.com/Support/Consumer/Download" target="_blank">Gigabyte</a></li>
+                    <li><a href="https://www.realtek.com/Download/Index?cate_id=194&menu_id=297" target="_blank">Realtek network</a></li>
+                    <li><a href="https://www.realtek.com/Download/List?cate_id=593&menu_id=369" target="_blank">Realtek audio</a></li>
+
+                    <li><a href="https://www.support.xerox.com/ru-ru/product/global-printer-driver/downloads" target="_blank">Xerox</a></li>
+                    <li><a href="https://support.hp.com/kz-ru/drivers" target="_blank">HP</a></li>
+                    <li><a href="https://www.kyoceradocumentsolutions.ru/ru/support/downloads.name-L3J1L3J1L21mcC9UQVNLQUxGQTYwNTNDSQ==.html" target="_blank">Kyocera</a></li>
+                    <li><a href="https://www.samsung.com/ru/support/downloadcenter/" target="_blank">Samsung</a></li>
+                    <!-- <li><a href="   " target="_blank">   </a></li>
+                    <li><a href="   " target="_blank">   </a></li> -->
+                </ol>
+            </td>
+            <td>
+                <h3>Официальные сайты с программами</h3>
+                <p>Поиск</p>
+                <input type="text" class="search-input">
+                <ol class="list sort-list">
+                    <li><a href="https://www.google.com/intl/ru_ru/chrome/" target="_blank">Google Chrome</a></li>
+                    <li><a href="https://www.mozilla.org/ru/firefox/new/" target="_blank">Mozilla Firefox</a></li>
+                    <li><a href="https://www.opera.com/ru" target="_blank">Opera</a></li>
+                    <li><a href="https://www.ghisler.com/download.htm" target="_blank">Total Commander</a></li>
+                    <li><a href="https://www.win-rar.com/start.html?&L=4" target="_blank">WinRar</a></li>
+                    <li><a href="https://www.7-zip.org/" target="_blank">7-zip</a></li>
+                    <li><a href="https://dotnet.microsoft.com/ru-ru/download/dotnet-framework" target="_blank">Microsoft Net Framework</a></li>
+                    <li><a href="https://www.openoffice.org/" target="_blank">Apache OpenOffice</a></li>
+                    <li><a href="https://ru.wps.com/" target="_blank">WPS Office</a></li>
+                    <li><a href="https://get.adobe.com/ru/reader/" target="_blank">Adobe Acrobat Reader</a></li>
+                    <li><a href="https://desktop.telegram.org/?setln=en" target="_blank">Telegram</a></li>
+                    <li><a href="https://discord.com/" target="_blank">Discord</a></li>
+                    <li><a href="https://www.360totalsecurity.com/ru" target="_blank">360 Total Sequrity</a></li>
+                    <li><a href="https://store.steampowered.com/about/" target="_blank">Steam</a></li>
+                    <li><a href="https://browser.yandex.ru/" target="_blank">Yandex browser</a></li>
+                    <li><a href="https://github.com/ValdikSS/GoodbyeDPI" target="_blank">Goodbye DPI</a></li>
+                    <!-- <li><a href="   " target="_blank">   </a></li>
+                    <li><a href="   " target="_blank">   </a></li> -->
+                </ol>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <h3>Онлайн проверка и тестирование компонентов</h3>
+                <ol class="list">
+                    <li><a href="https://ru.webcamtests.com/" target="_blank">камера</a></li>
+                    <li><a href="https://webcammictest.com/ru/" target="_blank">камера, микро, наушники</a></li>
+                    <li><a href="https://web.basemark.com/" target="_blank">web basemark</a></li>
+                    <li><a href="https://webglsamples.org/aquarium/aquarium.html" target="_blank">Web GL Aquarium</a></li>
+                    <li><a href="   " target="_blank">   </a></li>
+                </ol>
+            </td>
+            <td>
+                <h3>Скачать Windows</h3>
+                <ol class="list">
+                    <li><a href="https://www.microsoft.com/ru-ru/software-download/windows10" target="_blank">Страница Windows 10</a></li>
+                    <li><a href="https://www.microsoft.com/ru-ru/software-download/windows10ISO" target="_blank" fgcolor="red">Страница ISO Windows 10</a></li>
+                    <li><a href="https://www.microsoft.com/ru-ru/software-download/windows11" target="_blank">Страница Windows 11</a></li>
+                </ol>
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>
+                <h3 id="reset">Образы восстановления и тестирования</h3>
+                <ol class="list">
+                    <li><a href="https://sergeistrelec.name/" target="_blank">Официальный сайт Сергея Стрельца</a></li>
+                    <li>
+                        <a href="https://sergeistrelec.name/winpe_10_8/242-winpe-11-10-8-sergei-strelec-x86x64native-x86-20241108-%D1%80%D1%83%D1%81%D1%81%D0%BA%D0%B0%D1%8F-%D0%B2%D0%B5%D1%80%D1%81%D0%B8%D1%8F.html" target="_blank">win10-8 sergey strelec</a>
+                        <span>
+                            <table>
+                                <tr>
+                                    <td>CRC32:</td>
+                                    <td>88CA48E9</td>
+                                </tr>
+                                <tr>
+                                    <td>MD5:</td>
+                                    <td>67E91A7642B3F87656F0B6DD37884E04</td>
+                                </tr>
+                                <tr>
+                                    <td>SHA-1:</td>
+                                    <td>C7510B59AA196FA53556D9B9217D86B2A2B74F6C</td>
+                                </tr>
+                            </table>
+                        </span>
+                    </li>
+                    <li><a href="https://adminpe.ru/winpe10/" target="_blank">Официальный сайт Admin PE</a></li>
+                    <li><a href="https://www.passcape.com/index.php?category=14&id=4&section=downloads" target="_blank">Reset Windows Password</a></li>
+                    <li><a href="https://www.memtest86.com/" target="_blank">memtest86</a></li>
+                    <!-- <li><a href="   " target="_blank">   </a></li>
+                    <li><a href="   " target="_blank">   </a></li>
+                    <li><a href="   " target="_blank">   </a></li> -->
+                </ol>
+            </td>
+        </tr>
+    </table>
+    <hr>
+    <code>Cherk 10.11.2024</code>
+    <hr>
+    
+    
+</body>
+
+<script>
+    var lists = document.body.getElementsByClassName("sort-list");
+    for (let i = 0; i < lists.length; i++) {
+        const element = lists[i];
+        sortList(element);
+    }
+
+    const searchInputs = document.body.getElementsByClassName("search-input");
+    for (let i = 0; i < searchInputs.length; i++) {
+        const element = searchInputs[i];
+        search(element, element.nextElementSibling);
+    }
+
+
+    addIcons(document.body.getElementsByClassName("sort-list")[0]);
+    addIcons(document.body.getElementsByClassName("sort-list")[1]);
+
+
+    // поиск //
+    function search(searchElement, listElement){
+        var allElements = listElement.getElementsByTagName("li");
+        searchElement.oninput = ()=>{
+            var searchString = searchElement.value;
+            for(var i = 0; i < Array.from(allElements).length; i++)
+            {
+                var element = allElements[i];
+                var disp = "none";
+                if(element.innerText.toLowerCase().includes(searchString.toLowerCase()))
+                {
+                    disp = "list-item";  
+                };
+                element.style.display = disp;
+            }
+        };
+    }
+    
+    // сортировка //
+    function sortList(listElement){
+        var allElements = listElement.getElementsByTagName("li");
+        var array = [];
+        Array.from(allElements).forEach(element => {
+            array.push(element);
+        });
+        array.sort((a,b)=>{return (a.children[0].innerText > b.children[0].innerText) ? 1 : -1});
+    
+        listElement.innerHTML = "";
+        array.forEach(element => {
+            listElement.insertAdjacentElement("beforeend",element);
+        });
+    }
+    // добавление иконок //
+    // function addIcons(listElement){
+    //     var allElements = listElement.getElementsByTagName("li");
+        
+    //     var i = 0;
+    //     Array.from(allElements).forEach(element => {
+    //         var text = allElements[i].innerText.split(' ')[0];
+    //         var link = "https://www.google.com/s2/favicons?domain="+text;
+
+    //         allElements[i].innerHTML=`<img src="${link}.com"></img>`+allElements[i].innerHTML;
+    //         i++;
+    //     });
+    // }
+</script>
+</html>

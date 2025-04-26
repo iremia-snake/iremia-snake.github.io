@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        html, body{
+            height: 100vh;
+        }
+        body{
+            /* background-color: black; */
+            background-image: linear-gradient(rgb(0, 0, 0), rgb(22, 0, 146));
+            overflow: hidden;
+        }
+        div{
+            width: 1em;
+            height: 1em;
+            background-color: rgb(255, 255, 255);
+            /* background-image: radial-gradient(white 50%, transparent); */
+            position: absolute;
+            border-radius: 50%;
+            z-index: 2;
+
+            color: white;
+            font-size: 1em;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        span{
+            display: block;
+            position: absolute;
+            top: -1.3em;
+            left: .5em;
+            text-transform: capitalize;
+        }
+        p{
+            position: absolute;
+            top:0;
+            left:0;
+            background-color: rgba(255, 255, 255, 0.671);
+            height: 1px;
+            transform-origin: left;
+        }
+    </style>
+</head>
+<body>
+    <main></main>
+</body>
+<script>
+
+setPoints(25, document.body.children[0]);
+setLines(150, document.body.children[0]);
+
+    setInterval(()=>{
+        document.body.children[0].innerHTML = '';
+        setPoints(50, document.body.children[0]);
+        setLines(150, document.body.children[0]);
+    }, 1000 * 5);
+
+
+
+    function appendLine(element,p1 ,p2){
+        var p = document.createElement('p');
+        p.style.transform = 'translate('+p1[0]+'px, '+p1[1]+'px) rotate('+ Math.atan2(p2[1] - p1[1], p2[0] - p1[0])+'rad)';
+        p.style.width = getLenght(p1, p2) +'px';
+        element.appendChild(p);
+    }
+
+    function setLines(minlen, element){
+        let collection = element.querySelectorAll('div');
+        for(let i = 0; i < collection.length; i++){
+            let ipos = getPos(collection[i], 1);
+            for(let j = 0; j < i; j++){
+                let jpos = getPos(collection[j], 1);
+                let len = getLenght(ipos, jpos);
+                if(len > 50 && len < minlen){
+                    appendLine(element, ipos, jpos);
+                }
+            }
+        }
+    }
+
+    function setPoints(count, element){
+        for(let i = 0; i < count; i++){
+        let div = document.createElement('div');
+        div.innerHTML = '<span>'+ randomName() +'</span>';
+        var x = Math.random() * (window.innerWidth-16);
+        var y = Math.random() * (window.innerHeight-16);
+
+        div.style.transform = 'translate('+ x +'px, '+ y +'px)'
+
+        element.appendChild(div);
+    }
+    function randInt(min, max){
+        return Math.round( min + Math.random()*(max - min));
+    }
+    function randomName(){
+        var str = ''
+        var letterA = 'aeiouy';
+        var letterB = 'bcdfghjklmnpqrstvwxz';
+        var isA = false;
+        if(Math.random() > 0.5){
+            isA = true;
+        }
+        for(let i = 0; i < randInt(3, 8); i++){
+            var array = isA ? letterA : letterB;
+            if(Math.random() > 0.2) isA = !isA;
+            str += array[randInt(0, array.length-1)];
+        }
+        if(Math.random() > 0.7){
+            str+= '_' + String(randInt(1, 5));
+        }
+        return str;
+    }
+
+    
+
+    }
+    function getLenght(pos1, pos2){
+        var dx = pos2[0] - pos1[0];
+        var dy = pos2[1] - pos1[1];
+        return Math.sqrt( Math.abs( dx*dx + dy*dy ) );
+    }
+    function getPos(element, center){
+        var dx = 0;
+        var dy = 0;
+        if(center = 1){
+            dx = element.getBoundingClientRect().width/2;
+            dy = element.getBoundingClientRect().height/2;
+        }
+        return [int(element.getBoundingClientRect().x + dx), int(element.getBoundingClientRect().y + dy)]
+    }
+    function int(n){
+        return Math.round(Number(n));
+    }
+</script>
+</html>
