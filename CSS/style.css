@@ -5,13 +5,20 @@ html, body{
     box-sizing: border-box;
     min-height: 100%;
 }
+:root{
+    --firs-color: #e77f3c;
+    --second-color: #e5d0bc;
+    --accent: #53819f;
+    --dark: #1a1d25;
+}
+
 body{
-    background-color: #e4e1df ;
+    background-color: var(--second-color) ;
 }
 
 
 header{
-    background-color: #e2702d;
+    background-color: var(--firs-color);
     display: block;
     margin: 0;
     padding: 0;
@@ -21,7 +28,7 @@ header h1{
     text-transform: uppercase;
     letter-spacing: 0.5em;
     text-align: center;
-    color: #1e1a22;
+    color: var(--dark);
 }
 
 
@@ -31,7 +38,8 @@ header h1{
     border-top: white 2px solid;
 }
 .menu>li{
-    display: inline-block; 
+    display: inline-block;
+    font-weight: bold;
 }
 .menu, .submenu{
     list-style: none;
@@ -51,16 +59,19 @@ header h1{
 }
 
 .menu li:hover>.submenu{
-    display: block;
+    transform: scaleY(1);
+    transition: transform ease-out .2s;
 }
 .submenu{
     top: 100%;
     position: absolute;
-    display: none;
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
-    background-color: #33435f;
+    background-color: var(--accent);
     border-radius: 2px;
     z-index: 1;
+    transform: scaleY(0);
+    transform-origin: top;
+    font-weight: normal;
 }
 .submenu>li>.submenu{
     left: 100%;
@@ -78,7 +89,7 @@ main{
 footer{
     height: 100px;
     width: 100%;
-    background-color: #1e1a22;
+    background-color: var(--dark);
     color: white;
 }
 footer>p{
@@ -95,4 +106,12 @@ footer>p{
 .center{
     width: max-content;
     margin: 0 auto;
+}
+.avatar{
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    float: left;
+    margin: 0 10px;
+    border: 2px solid var(--dark);
 }
