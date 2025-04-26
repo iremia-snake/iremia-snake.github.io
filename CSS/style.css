@@ -37,6 +37,10 @@ header h1{
     text-align: center;
     border-top: white 2px solid;
 }
+.menu a{
+    text-decoration: none;
+    color: inherit;
+}
 .menu>li{
     display: inline-block;
     font-weight: bold;
@@ -53,6 +57,7 @@ header h1{
     text-align: center;
     position: relative;
     color: white;
+    transition: all .3s;
 }
 .menu li:hover{
     background: rgba(255, 255, 255, 0.3);
