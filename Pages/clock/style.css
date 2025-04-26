@@ -1,0 +1,114 @@
+html, body{
+    min-height: 100%;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body{
+    background-color: rgb(34, 35, 44);
+}
+:root{
+    --width: 100px;
+    --height: 150px;
+}
+.container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 80vh;
+}
+.points{
+    --pwidth: 18px;
+    position: relative;
+    display: block;
+    width: var(--pwidth);
+    height: var(--height);
+    margin: 0 10px;
+}
+.points::before, .points::after{
+    content: '';
+    display: block;
+    position: absolute;
+    width: var(--pwidth);
+    height: var(--pwidth);
+    background-color: rgb(122, 139, 156);
+    border-radius: 50%;
+    top: 20%;
+}
+.points::after{
+    top: auto;
+    bottom: 20%;
+}
+.clock-number{
+    display: block;
+    width: var(--width);
+    height: var(--height);
+
+    margin: 0 1px;
+
+    border-radius: 6px;
+    box-shadow: 0px 0px 10px -2px rgba(0, 0, 0, 0.5);
+
+    text-align: center;
+    line-height: var(--height);
+
+    font-size: var(--height);
+    font-size: calc(var(--height)*0.75);
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: 700;
+    color: white;
+
+    transform-style: preserve-3d;
+    perspective: 500px;
+}
+
+.clock-number>.card{
+    position: absolute;
+    width: 100%;
+    height: calc(var(--height)/2);
+
+    background-color: rgb(56, 88, 117);
+    border-radius: inherit;
+    
+    transform-style: preserve-3d;
+    
+    transition: transform 0.7s cubic-bezier(0.65, 0.04, 0.83, 0.98);
+    transform-origin: bottom;
+}
+.clock-number>.card>.symbol{
+    position: absolute;
+    inset: 0;
+    
+    background-color: inherit;
+    
+    overflow: hidden;
+    backface-visibility: hidden;
+
+    transition: inherit;
+    transition-property: filter;
+
+    border-radius: inherit;
+    border: 1px rgb(15, 15, 27) solid;
+}
+.clock-number>.card>.back{
+    line-height: 0;
+    transform: rotateY(180deg) scale(-1);
+
+    filter: brightness(1.5);
+}
+
+.clock-number>.card.flip{
+    transform: rotateX(-180deg);
+}
+.clock-number>.card.flip>.front{
+    filter: brightness(0);
+}
+.clock-number>.card.flip>.back{
+    filter: brightness(1);
+}
+
+.clock-number:nth-child(7) .card.flip,
+.clock-number:nth-child(4) .card.flip,
+.clock-number:nth-child(1) .card.flip{
+    transition-delay: 0.05s;
+}

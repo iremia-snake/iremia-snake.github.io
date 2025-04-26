@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *{
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+        body{
+            background-color: rgb(42, 42, 42);
+        }
+        .container{
+            margin: 100px auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+
+            transform-style: preserve-3d;
+            perspective: 1000px;
+        }
+        .container .card{
+            --x: -100%;
+            --y: -100%;
+            --color: red;
+            position: relative;
+            display: block;
+            width: 200px;
+            height: 200px;
+            background-color: rgba(58, 58, 58, 0.5);
+            border-radius: 20px;
+            overflow: hidden;
+            margin: 10px;
+            transition: transform 0.6s ease-out;
+
+            box-shadow: 0px 0px 16px -3px rgba(27, 27, 27, 0.5);
+        }
+        .container .card span{
+            display: block;
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            z-index: 100;
+            font-size: 18px;
+            line-height: 200px;
+            color: rgba(255, 255, 255, 0.608);
+            text-align: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        /* .container .card:hover{
+            
+            transform: rotateX(10deg);
+        } */
+        .container .card::before{
+            content: '';
+            display: block;
+            position: absolute;
+            top: var(--y);
+            left: var(--x);
+            transform: translate(-50%, -50%);
+            background-image: radial-gradient(circle at 50% 50%, var(--color), transparent 50%);
+            background-repeat: no-repeat;
+            width: 200%;
+            height: 200%;
+            /* transition: all 0.1s linear; */
+            opacity: 0;
+            transition: 0.5s ease-out, top 0s, left 0s;
+        }
+        .container .card:hover::before{
+            opacity: 1;
+        }
+        .container .card::after{
+            content: '';
+            display: block;
+            position: absolute;
+            inset: 2px;
+            border-radius: 18px;
+            background-color: rgba(54, 54, 54, 0.75);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card"><span>card-01</span></div>
+        <div class="card"><span>card-02</span></div>
+        <div class="card"><span>card-03</span></div>
+        <div class="card"><span>card-04</span></div>
+        <div class="card"><span>card-05</span></div>
+        <div class="card"><span>card-06</span></div>
+        <div class="card"><span>card-07</span></div>
+        <div class="card"><span>card-08</span></div>
+        <div class="card"><span>card-09</span></div>
+        <div class="card"><span>card-10</span></div>
+
+    </div>
+</body>
+<script>
+    window.onload = Main;
+    function Main(){
+        // let containers = document.querySelectorAll('.container');
+        // containers.forEach(container =>{container.onmousemove = function(event){
+        //     for(let card of container.children){
+        //         let bounding = card.getBoundingClientRect()
+        //         card.style.setProperty('--x', `${event.clientX - bounding.left}px`);
+        //         card.style.setProperty('--y', `${event.clientY - bounding.top}px`);
+        //     }
+        // }});
+
+
+        let cards = document.querySelectorAll('.card');
+        cards.forEach(
+            card => {card.onmousemove = (event)=>{
+                GlowingMoving(event, card);
+                TransformMoving(event, card, 30);
+            };
+            card.onmouseleave = (event)=>{
+                card.style.setProperty('transform','none');
+            };
+            card.style.setProperty('--color', RandomColor(100, 50));
+        });
+        
+        function GlowingMoving(event, element){
+            element.style.setProperty('--x', `${event.offsetX}px`);
+            element.style.setProperty('--y', `${event.offsetY}px`);
+        };
+        function TransformMoving(event, element, deg){
+            let bounding = element.getBoundingClientRect()
+            element.style.setProperty('transform',`rotateX(${event.offsetY / bounding.height * -deg + deg*0.5}deg) rotateY(${event.offsetX / bounding.width * deg - deg*0.5}deg)`);
+        }
+        function RandomColor(s, l){
+            return `hsl(${Math.random()*360}deg, ${s}%, ${l}%)`
+        }
+    }
+</script>
+</html>

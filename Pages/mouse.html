@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        window.onload=Main;
+        function Main(){
+            function Create(block,x,y,color,size){
+                let elem = document.createElement('span');
+                elem.style.cssText=`left:${x-size/2}px;top:${y-size/2}px;--color:${color};--size:${size}px`;
+                // document.body.append(elem);
+                block.append(elem);
+            }
+            function Delete(elem,max){
+                if(elem.children.length>max){elem.children[0].remove();elem.children[1].style.top='100vh';}
+            }
+            function Random(min,max){
+                return Math.ceil(Number(min) + Math.random()*Number(max-min))
+            }
+            function Color(mas){
+                return `rgb(${Random(mas[0],mas[1])}, ${Random(mas[2],mas[3])}, ${Random(mas[4],mas[5])})`
+            }
+           
+            let border = window.getComputedStyle(area).borderWidth.slice(0,-2);
+            area.addEventListener('mousemove', (event) => {
+                // console.log(event.clientX);
+                Create(area,Math.round(event.pageX-area.getBoundingClientRect().x-scrollX-border),Math.round(event.pageY-area.getBoundingClientRect().y-scrollY-border),Color([60,200,20,40,60,200]),Random(2,7));
+                Delete(area,300);
+                
+            });
+            setInterval(()=>{Delete(area,0)},50);
+            // setInterval(()=>{console.log(document.body.children.length-1)},600)
+        }
+    </script>
+    <style>
+        *{padding: 0;margin: 0;box-sizing: border-box;}
+        body{
+            position: absolute;
+            /* width: 100vw;
+            height: 100vh; */
+            /* background-color: black; */
+            /* overflow: hidden; */
+            height: 200vh;
+            width: 200vw;
+            background-color: rgb(45, 31, 66);
+        }
+        #area{
+            position: absolute;
+            --width: 90vw;
+            --height: 90vh;
+            top: calc((100vh - var(--height))/2);
+            left: calc((100vw - var(--width))/2);
+            width: var(--width);
+            height: var(--height);
+            background-color: rgb(0, 0, 0);
+            background-image: radial-gradient(circle at center, rgb(14, 27, 30),black);
+            overflow: hidden;
+            border: 32px solid rgb(104, 232, 236);
+            border-image: round 32 url(border1.png);
+            
+            /* border-radius: 50px; */
+        }
+        span{
+            /* --color:rgb(0, 255, 21);
+            --size: 10px; */
+            position: absolute;
+            display: block;
+            width: var(--size);
+            height: var(--size);
+            background-color: var(--color);
+            box-shadow: 0 0 10px 3px var(--color);
+            border-radius: 50%;
+             /*clip-path: polygon(50% 0, 55% 45%, 100% 50%, 55% 55%, 50% 100%, 45% 55%, 0 50%, 45% 45%); */
+             /*clip-path: polygon(50% 0, 65% 35%, 100% 50%, 65% 65%, 50% 100%, 35% 65%, 0 50%, 35% 35%); */
+
+            animation: anim ease 3s infinite;
+            transition: all 0.9s ease-in;
+        }
+        @keyframes anim{
+            0%{
+                filter: brightness(0.4);transform: translate(-3px, 1px);
+            }
+            50%{
+                filter: brightness(1.4);transform: translate(3px, -1px);
+            }
+            100%{
+                filter: brightness(0.4);transform: translate(-3px, 1px);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="area"></div>
+</body>
+</html>
