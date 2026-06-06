@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="cube.css">
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js"></script>
+    <title>Document</title>
+</head>
+<body>
+    <form action="">
+        <table>
+            <tr>
+                <td><label for="mouse_control">stop</label></td>
+                <td><input type="checkbox" name="mouse_control" id=""></td>
+            </tr>
+            <tr>
+                <td><label for="size">size</label></td>
+                <td><input type="range" name="input_size" id="" min="1" max="1000" value="250"></td>
+            </tr>
+            <tr>
+                <td><label for="perspective">perspective</label></td>
+                <td><input type="range" name="input_perspective" id="" min="1" max="4000" value="1000"></td>
+            </tr>
+            <tr>
+                <td><label for="border_width">border_width</label></td>
+                <td><input type="range" name="input_border_width" id="" min="0" max="10" value="2" step="0.1"></td>
+            </tr>
+            <tr>
+                <td><label for="">opacity</label></td>
+                <td><input type="range" name="input_opacity" id="" min="0" max="1" step="0.01" value="0.7"></td>
+            </tr>
+        </table>    
+    </form>
+    <div class="container" id="cube">
+        <div class="back side"></div>
+        <div class="left side"></div>
+        <div class="right side"></div>
+        <div class="top side"></div>
+        <div class="bottom side"></div>
+        <div class="front side"></div>
+      </div>
+</body>
+</html>

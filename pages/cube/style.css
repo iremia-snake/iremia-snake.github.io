@@ -1,0 +1,49 @@
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+body{
+    width: 100vw;
+    height: 100vh;
+    perspective: 500px;
+    /* perspective-origin: center -150px; */
+    background: linear-gradient(rgb(22, 22, 22),rgb(0, 0, 0));
+    /* background-image: url(https://catherineasquithgallery.com/uploads/posts/2021-02/1614453843_81-p-temnii-fon-dlya-rabochego-stola-113.jpg); */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    color: white;
+    overflow: hidden;
+}
+form{
+    opacity: 0;
+    position: absolute;
+    z-index: 1000;
+    transition: all 0.3s ease-in-out;
+}
+form:hover{
+    opacity: 1;
+}
+label{
+    display: block;
+}
+input[type="range"]{
+    width: 400px;
+    height: 1em;
+}
+input[type="checkbox"]{
+    width: 1em;
+    height: 1em;
+}
+/* input[type="checkbox"]::after{
+    content: "";
+    display: block;
+    background-color: red;
+    width: inherit;
+    height: inherit;
+    transition: all 0.1s ease;
+}
+input[type="checkbox"]:checked::after{
+    background-color: greenyellow;
+} */
