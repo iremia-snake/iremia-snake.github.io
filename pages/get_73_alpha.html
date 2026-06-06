@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        html, body{
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100%;
+        }
+        body{
+            background-color: rgb(190, 190, 190);
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: left;
+            flex-grow: 1px;
+        }
+        .number{
+            display: block;
+            position: fixed;
+            inset: 0;
+            z-index: -10;
+            color: rgba(255, 255, 255, 0.3);
+            font-size: 50vh;
+            font-weight: 700;
+            line-height: 100vh;
+            text-align: center;
+            text-shadow: 0px 1vh 2.5vh rgba(0, 0, 0, 0.2);
+        }
+        .magic-button{
+            --c2: rgb(54, 54, 54);
+            --c1: rgb(255, 82, 82);
+            padding: 0.5em 1em;
+
+            display: block;
+            margin: 60px 30px;
+
+            border: none;
+            border-radius: 2px;
+            outline: none;
+
+            background-image: linear-gradient(90deg, var(--c1) 50%, var(--c2) 50%);
+            background-size: 201%;
+
+           
+            text-transform: uppercase;
+            font-weight: 500;
+            font-size: 1.25em;
+            color: white;
+            box-shadow: 0px 0px 12px 0px rgba(0, 0, 0, 0.25);
+            animation: end .2s ease-out both;
+        }
+        .magic-button:hover{
+            background-image: linear-gradient(90deg, var(--c2) 50%, var(--c1) 50%);
+            animation-name: start;
+        }
+        @keyframes start {
+            from{background-position: 0%;}to{background-position: 100%;}
+        }
+        @keyframes end {
+            from{background-position: 0%;}to{background-position: 100%;}
+        }
+    </style>
+</head>
+<body>
+    <div class="number">73</div>
+    <button class="magic-button">button</button>
+</body>
+<script>
+    let btns = document.body.getElementsByTagName('button');
+    Array.from(btns).forEach(button => {
+        button.onclick = ()=>{click(button);}
+    });
+    function click(element){
+        let nbtn = element.cloneNode(true);
+        let randomNumber = randInt(60, 300);
+        let moving = Math.random()>.5;
+        
+        nbtn.style.cssText += "--c1: " + randomColor();
+        nbtn.style.marginRight = nbtn.style.marginLeft = randomNumber+"px";
+        
+        nbtn.innerText = randInt(0, 200);
+        
+        document.body.insertAdjacentElement('beforeend', nbtn);
+        setTimeout(()=>{ nbtn.onclick = element.onclick;}, 10);
+        
+        scroll();
+
+	if(nbtn.innerText == 73)
+	{
+		alert("YOU WIN");
+	}
+    }
+
+    function randInt(min, max){
+        return Math.round(min + Math.random() * (max - min));
+    }
+    function randomColor(){
+        return `rgb(${randInt(0, 255)}, ${randInt(0, 255)}, ${randInt(0, 255)})`;
+    }
+    function scroll(){
+
+        document.body.children[document.body.children.length-1].scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+        });
+    }
+</script>
+</html>
