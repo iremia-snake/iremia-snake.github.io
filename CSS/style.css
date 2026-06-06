@@ -36,7 +36,7 @@ body{
     background-color: var(--bg-color);
     /* background-image: url(/images/fire.jpg); */
     background-attachment: fixed;
-    background-size: 100%;
+    background-size: cover;
     color: var(--text-color);
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
