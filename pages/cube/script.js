@@ -1,58 +1,74 @@
-window.onload = Main;
-        function Main(){
-            RotateCube(document.getElementById("cube"),90*4);
-            InputBool(document.getElementById("cube"),"--bool",document.getElementsByName("mouse_control")[0],"");
-            SetStyle(document.body,"perspective",document.getElementsByName("input_perspective")[0],"px");
-            SetStyle(document.getElementById("cube"),"--size",document.getElementsByName("input_size")[0],"px");
-            SetStyle(document.getElementById("cube"),"--border",document.getElementsByName("input_border_width")[0],"px");
-            SetStyle(document.getElementById("cube").children,"opacity",document.getElementsByName("input_opacity")[0],"");
+'use strict'
+
+const mainCube = document.getElementById('cube');
+let parametrs = {};
+const controlsForm = document.getElementById('controls-form');
+const cubeSize = controlsForm.querySelector('input[name="input_size"]');
+const cubePerspective = controlsForm.querySelector('input[name="input_perspective"]');
+const cubeBorderWidth = controlsForm.querySelector('input[name="input_border_width"]');
+const cubeOpacity= controlsForm.querySelector('input[name="input_opacity"]');
+const cubeMouseControlOn= controlsForm.querySelector('input[name="mouse_control"]');
+
+function throttle(func, limit){
+    let inThrottle = false;
+    return function(...args){
+    if(!inThrottle){
+        func.apply(this, args);
+        inThrottle = true;
+        setTimeout(() => {inThrottle = false}, limit);
         }
-        function RotateCube(elem,sensivity){
-            let window_width = window.getComputedStyle(document.body).width.slice(0,-2);
-            let window_height = window.getComputedStyle(document.body).height.slice(0,-2);
-            // console.log(window_width,window_height);
-            document.body.addEventListener("mousemove",(event)=>{
-                if(document.getElementsByName("mouse_control")[0].checked){
-                    let x = event.pageX;
-                    let y = event.pageY;
-                    // let sensivity = 90*4;
-                    let rotX = x/window_width*sensivity - sensivity/2;
-                    let rotY = y/window_height*sensivity - sensivity/2;
-                    elem.style.transform = `rotateX(${-rotY}deg) rotateY(${rotX}deg)`;
-                }
-            });
-        }
-        function SetStyle(elem,style,input,measurement){
-            if(elem[0]){
-                setInterval(()=>{
-                    let value = input.value;
-                    if (last_value != value){
-                        last_value = value;
-                        for (i of elem){
-                            i.style.cssText += `${style}:${value}${measurement};`;
-                        }
-                        // console.log();
-                    }
-                },250);
-            }
-            let last_value;
-            setInterval(()=>{
-                let value = input.value;
-                if (last_value != value){
-                    last_value = value;
-                    elem.style.cssText += `${style}:${value}${measurement};`;
-                    // console.log();
-                }
-            },250);
-        }
-        function InputBool(elem,style,input,measurement){
-            let last_value;
-            setInterval(()=>{
-                let value = input.checked;
-                if (last_value != value){
-                    last_value = value;
-                    elem.style.cssText += `${style}:${!value*1}${measurement};`;
-                    // console.log(value);
-                }
-            },250);
-        }
+    }
+}
+function updateStyle(){
+    let str = '';
+    for(let key in parametrs){
+        str += `--${key}:${parametrs[key]};`;
+    }
+    mainCube.style.cssText = str.slice(0, str.length-1);
+}
+
+function setCubeSize(event){
+    parametrs['size'] = event.target.value + 'px';
+    updateStyle();
+}
+function setCubePerspective(event){
+    document.body.style.perspective = event.target.value + 'px';
+}
+function setCubeBorder(event){
+    parametrs['border'] = event.target.value + 'px';
+    updateStyle();
+}
+
+function rotateCube(event){
+    mainCube.style.transform = `rotateX(${-event.pageY/window.innerHeight*360}deg) rotateY(${-event.pageX/window.innerWidth*360}deg)`;
+}
+function touchTotateCube(event){
+    mainCube.style.transform = `rotateX(${-event.touches[0].clientY/window.innerHeight*360}deg) rotateY(${-event.touches[0].clientX/window.innerWidth*360}deg)`;
+}
+
+function setCubeMouseControl(event){
+    if(event.target.checked){
+        parametrs['auto'] = 0;
+        document.body.addEventListener('mousemove', rotateCube);
+        document.body.addEventListener('touchmove', touchTotateCube);
+    }else{
+        parametrs['auto'] = 1;
+        document.body.removeEventListener('mousemove', rotateCube);
+        document.body.removeEventListener('touchmove', touchTotateCube);
+    }
+    updateStyle();
+}
+
+function setCubeOpacity(event){
+    Array.from(mainCube.getElementsByClassName('side')).forEach(element => {
+        element.style.opacity = event.target.value;
+    });
+}
+
+cubeSize.addEventListener('input', throttle(setCubeSize, 30)); 
+cubePerspective.addEventListener('input', throttle(setCubePerspective, 30)); 
+cubeBorderWidth.addEventListener('input', throttle(setCubeBorder, 30));
+cubeOpacity.addEventListener('input', throttle(setCubeOpacity, 30));
+cubeMouseControlOn.addEventListener('click', setCubeMouseControl);
+
+/// механизм работы - по событию изменить параметр, собрать в строку настроек, применить

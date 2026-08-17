@@ -2,7 +2,7 @@
     position: absolute;
     top: calc((100vh - var(--size))/2);
     left: calc((100vw - var(--size))/2);
-    --bool: 0;
+    --auto: 1;
     --size: 250px;
     --border: 3px;
     height: var(--size);
@@ -11,7 +11,7 @@
     transform-style: preserve-3d;
     /* transition: transform 0.7s cubic-bezier(0.075, 0.82, 0.165, 1); */
     animation: rotate infinite linear;
-    animation-duration: calc(var(--bool)*20s);
+    animation-duration: calc(var(--auto)*20s);
 }
 @keyframes rotate {
     100% {
@@ -23,29 +23,22 @@
     position: absolute;
     width: inherit;
     height: inherit;
-    opacity: 0.7;
+    opacity: 1;
     border: var(--border) solid rgb(255, 255, 255);
     /* background-color: #FFC160; */
     /* background-color: transparent; */
-    background-image: url(https://pngimg.com/uploads/anime_girl/anime_girl_PNG6.png);
-    background-image: url(https://3djungle.ru/upload/resize_cache/iblock/ee3/400_400_1/ee3c83645eb0ea7781503c4317052a89.jpg);
+    background-image: url(redstone_lamp_on.png);
     image-rendering: pixelated;
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
 }
 .container .side::after{
-    content: '\2111';
-    content: "";
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    text-align: center;
-    font-size: 70px;
-    line-height: var(--size);
-    color: rgb(255, 255, 255);
+    content: '';
     display: block;
     width: inherit;
     height: inherit;
-    background: radial-gradient(transparent,black 150%);
+    background: radial-gradient(transparent, rgba(0, 0, 0, 0.4));
     
 }
 /* все грани надо отодвинуть от центра на половину длины грани

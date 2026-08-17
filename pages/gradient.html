@@ -15,82 +15,175 @@
             color: rgb(255, 255, 255);
         }
         html,body{
-            margin: 0;
-            padding-top: 100px;
-            box-sizing: border-box;
-            background-attachment: fixed;
-            height: 100%;
+            min-height: 100%;
         }
-        button{
-            display: block;
-            font-size: 22px;
+        .input-group{
+            margin: auto;
+            width: fit-content;
+            margin-top: 1em;
+            text-align: center;
+        }
+        button, input{
+            display: inline-block;
+            font-size: 1.5em;
             text-align: center;
             font-family: 'JetBrains Mono', monospace;
-            margin: 10px auto;
+            margin: .2em;
             background-color: rgb(246, 246, 246);
-            border: 2px solid rgb(255, 255, 255);
-            border-radius: 100px;
-            padding: 5px 24px;
-            box-shadow: 0 3px 12px -3px rgb(190, 190, 190);
+            border: .12em solid rgb(255, 255, 255);
+            border-radius: 1em;
+            padding: .2em .8em;
+            box-shadow: 0 .1em .8em -.2em rgb(190, 190, 190);
             cursor: pointer;
             transition: all 0.4s;
         }
-        button:hover{
-            background-color: rgb(255, 255, 255);
-            box-shadow: 0 3px 12px -1px rgb(190, 190, 190);
-            
+        input{
+            width: 10em;
         }
-        p{
+        .main-button{
             display: block;
-            margin: 10px auto;
+            margin: auto;
+            margin-top: 25vh;
+            margin-bottom: 4em; 
+        }
+        button:hover{
+            background-color: rgb(255, 255, 255);      
+        }
+        .block-text{
+            display: block;
+            margin: 1.5em auto;
             width: max-content;
-            border: 2px solid;
+            border: .1em solid;
             border-left: none;
             border-right: none;
-            padding: 1px 4px;
+            padding: 0 .2em;
             text-align: center;
             font-family: 'JetBrains Mono', monospace;
-            font-size: 20px;
+            font-size: 1em;
+            max-width: 100%;
         }
     </style>
 </head>
 <body>
-    <button id="button">new gradient</button>
+    <div class="input-group">
+        <input type="number" id="input-min" placeholder="Minimum">
+        <input type="number" id="input-max" placeholder="Maximum">
+    </div>
+    <button id="button" class="main-button">New gradient</button>
+    <p class="block-text" id="rgb-string"></p>
+    <p class="block-text" id="hex-string"></p>
 </body>
 <script>
-    Main();
-    // document.body.style.color='rgb('+RandomInt(0,100)+','+RandomInt(0,100)+','+RandomInt(0,100)+')';
-    // button.onclick=Main;
-    button.addEventListener('click', Main,true);
-    button.addEventListener('click', () => {document.body.style.color='rgb('+RandomInt(0,100)+','+RandomInt(0,100)+','+RandomInt(0,100)+')'},true)
-    
-    function Print(el,n){
-        document.body.insertAdjacentHTML('beforeend',`<${el}>${n}</${el}>`);
-    }
-    function RandomInt(min,max){
-        if(min==null){min=0}else{min=>Number(min)}
-        if(max==null){max=0}else{max=>Number(max)}
-        min--;
-        return Math.ceil(min+Math.random()*(max-min))
-    }
-    function Normal(n,min,max){
-        return (n>max)?max:(n<min)?min:n;
-    }
-    function RandomGradient(deg,n,min,max){
-        let str = 'linear-gradient('+deg;
-        for(let i=0;i<n;i++){
-            str+=`,rgb(${Normal(RandomInt(min,max),0,255)}, ${Normal(RandomInt(min,max),0,255)}, ${Normal(RandomInt(min,max),0,255)})`;
+    'use strict'
+
+    function tohex(n){
+        if (n == undefined || n == null) return undefined;
+        if(n==0) return '0';
+        let minus = '';
+        if(n < 0){
+            minus = '-'
+            n = -n;
         }
-        str+=')';
-        return str;
+        const liters = ['A','B','C','D','E','F'];
+        let hexArr = []
+        while (true){
+            if (n <= 0){
+                break;
+            }
+            let num = n % 16;
+            num = num > 9 ? liters[num - 10] : num;
+            hexArr.push(String(num));
+            n = Math.floor(n/16);
+        }
+        return minus + hexArr.reverse().join('');
     }
-    function Main(){
-        let LightGrad = RandomGradient(RandomInt(0,360)+'deg',RandomInt(2,5),160,300);
-        document.body.lastElementChild.remove();
-        Print('p',LightGrad);
-        document.body.style.background=LightGrad;
+
+    function clamp(n, min, max){
+        return Math.max(min, Math.min(n, max)); 
     }
-    // document.body.style.background=RandomGradient(90,5);
-    // setInterval(() => document.body.style.background=RandomGradient(90,3),2000);
+
+    function randint(min, max){
+        min = (min == undefined || min == null) ?  0 : Number(min);
+        max = (max == undefined || max == null) ?  0 : Number(max);
+
+        if (min > max){
+            let t = max
+            max = min
+            min = t
+        }
+        return Math.round(min + Math.random()*(max-min));
+    }
+
+    function rgbColorString(color_arr){
+        return `rgb(${color_arr[0]}, ${color_arr[1]}, ${color_arr[2]})`;
+    }
+
+    function hexColorString(color_arr){
+        return "#"+
+            tohex(color_arr[0]).padStart(2, "0")+
+            tohex(color_arr[1]).padStart(2, "0")+
+            tohex(color_arr[2]).padStart(2, "0");
+    }
+
+    function randomColor(dr = [0, 255], dg = [0, 255], db = [0, 255]){
+        let color_arr = [];
+        [dr, dg, db].forEach(diapason => {
+            color_arr.push(clamp(randint(diapason[0], diapason[1]), 0, 255));
+        })
+        return color_arr;
+    }
+
+    function toLinearGradientString(colors = [], deg = 0, fn = ()=>{}){
+        let gradient_string = 'linear-gradient(';
+        gradient_string += String(deg) + 'deg, '
+        colors.forEach(c => {
+            gradient_string += fn(c) + ', ';
+        });
+        return gradient_string.slice(0, gradient_string.length-2) + ')';
+    }
+
+    function getColorBrightness(color){
+        // ITU-R BT.709
+        return (0.299 *color[0] + 0.587 * color[1] + 0.114 * color[2]);
+    }
+
+
+    const delta = [110, 300];
+
+    function newGradient(){
+        let colors = [];
+        const minInput = document.getElementById('input-min').value;
+        const maxInput = document.getElementById('input-max').value;
+
+        for(let i = 0; i < clamp(randint(-4, 4), 2, 4); i++){
+            let newDelta = [...delta];
+            if(minInput != '') newDelta[0] = Number(minInput);
+            if(minInput != '') newDelta[1] = Number(maxInput);
+            colors.push(randomColor(newDelta, newDelta, newDelta));
+        }
+
+        let deg = randint(0, 360);
+        let rgb_gradient = toLinearGradientString(colors, deg, rgbColorString);
+        document.body.style.background = rgb_gradient;
+
+        document.getElementById('rgb-string').innerText = rgb_gradient;
+        document.getElementById('hex-string').innerText = toLinearGradientString(colors, deg, hexColorString);
+
+        // console.log();
+
+        if(Math.min(...colors.map(getColorBrightness)) < 128){
+                Array.from(document.body.getElementsByClassName('block-text')).forEach(element => {
+                   element.style.color = 'rgb(255, 255, 255)'; 
+                });
+        }else{
+            Array.from(document.body.getElementsByClassName('block-text')).forEach(element => {
+                element.style.color = 'rgb(0, 0, 49)'; 
+            });
+        }
+    };
+
+    window.onload = newGradient;
+    document.getElementById('button').onclick = newGradient;
+
 </script>
 </html>

@@ -111,6 +111,15 @@ img{
     font-weight: 500;
     text-indent: 0;
 }
+.red-splitter{
+    --border-color: var(--primary-color);
+    border: .2em solid var(--border-color);
+    border-top: none;
+    border-bottom: none;
+    border-right: none;
+    width: 0;
+    margin: 0 .5em;
+}
 
 .text-center{
     text-align: center;
@@ -270,6 +279,37 @@ img{
     mask-size: 110% 105%;
 }
 
+.row>*{
+    word-spacing: initial;
+    display: inline-block;
+}
+.row{
+    word-spacing: 1em;
+}
+
+.image{
+    display: block;
+}
+.photo-frame{
+    width: 30%;
+    position: relative;
+    border: .8rem double var(--primary-color);
+    background-color: var(--third-color);
+    margin-bottom: 1em;
+}
+.photo-frame .photo-title{
+    position: absolute;
+    bottom: -1rem;
+    left: 50%;
+    transform: translate(-50%, 25%);
+    margin: auto;
+    display: block;
+    text-align: center;
+    width: max-content;
+    padding: .2em 1em;
+    background-image: linear-gradient(#ffffff 50%, #fbfbfb 61%);
+}
+
 .audio-player{
     position: relative;
     display: block;
@@ -337,36 +377,6 @@ img{
     border-radius: .1em;
 }
 
-.row>*{
-    word-spacing: initial;
-    display: inline-block;
-}
-.row{
-    word-spacing: 1em;
-}
-
-.image{
-    display: block;
-}
-.photo-frame{
-    width: 30%;
-    position: relative;
-    border: .8rem double var(--primary-color);
-    background-color: var(--third-color);
-    margin-bottom: 1em;
-}
-.photo-frame .photo-title{
-    position: absolute;
-    bottom: -1rem;
-    left: 50%;
-    transform: translate(-50%, 25%);
-    margin: auto;
-    display: block;
-    text-align: center;
-    width: max-content;
-    padding: .2em 1em;
-    background-image: linear-gradient(#ffffff 50%, #fbfbfb 61%);
-}
 
 @media screen and (max-width: 800px){
     .row{

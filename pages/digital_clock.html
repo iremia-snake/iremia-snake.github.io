@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Цифровые часы</title>
+    <style>
+        *{
+            box-sizing: border-box;
+            padding: 0;
+            margin: 0;
+        }
+        html, body{
+            height: 100%;
+            width: 100%;
+        }
+        body{
+            position: absolute;
+            background-color: rgb(249, 240, 255);
+        }
+        .container{
+            width: 100%;
+            margin-top: 10%;
+        }
+        .clock{
+            margin: auto;
+            --width: 100px;
+            --height: 170px;
+            width: max-content;
+            background: rgb(187, 182, 207);
+            border-radius: 1.1rem;
+            box-shadow: 0 .2rem 1rem -.5rem black;
+
+        }
+        .num{
+            display: inline-block;
+            position: relative;
+            height: var(--height);
+            width: var(--width);
+            /* background-color: aquamarine; */
+            perspective: 1000px;
+            transform-style: preserve-3d;
+
+            font-size: var(--width);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            text-align: center;
+            font-weight: 900;
+            color: rgb(235, 235, 235);
+            margin: 1rem;
+            box-shadow: 0 .2rem 1rem -.5rem black;
+        }
+        .num .card{
+            position: absolute;
+            display: block;
+            width: var(--width);
+            height: calc(var(--height) / 2);
+            background: linear-gradient(rgb(119, 115, 138), rgb(86, 82, 100));
+            transform-style: preserve-3d;
+            transform-origin: bottom;
+            transition: all .57s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            transform: translateZ(1px);
+            border-radius: .3rem;
+        }
+        .num .top{
+            /* background-color: coral; */
+            transition: none;
+        }
+        .num .drop{
+            /* background-color: blue; */
+            transform: translateZ(1px) rotateX(-180deg);
+            z-index: 100;
+        }
+        .num .bottom{
+            /* background-color: brown; */
+            transform: rotateX(-180deg);
+        }
+        .num .card div{
+            display: block;
+            position: absolute;
+            inset: 0;
+            backface-visibility: hidden;
+            transition: inherit;
+            border-radius: inherit;
+            overflow: hidden;
+        }
+        .num .card .front{
+            line-height: var(--height);
+            background: inherit;
+            /* background-color: burlywood; */
+        }
+        .num .card .back{
+            line-height: 0px;
+            transform: rotateX(180deg);
+            background: inherit;
+            /* background-color: rgb(0, 120, 136); */
+        }
+        .num .drop .front{
+            filter: brightness(0.2);
+        }
+        .num .top .back{
+            filter: brightness(2);
+        }
+        .dots{
+            position: relative;
+            display: inline-block;
+            height: var(--height);
+            margin: 1rem .5rem;
+            background-color: red;
+        }
+        .dots div{
+            position: absolute;
+            width: 1.5em;
+            height: 1.5em;
+            background: linear-gradient(rgb(119, 115, 138), rgb(86, 82, 100));
+            border-radius: .3em;
+            transform: translate(-50%);
+            box-shadow: 0 0 10px -5px black;
+        }
+        .dots div:first-child{
+            top: 25%;
+        }
+        .dots div:last-child{
+            bottom: 25%;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="clock">
+            <div class="num">
+                <div class="card top">
+                    <div class="front"></div>
+                    <div class="back"></div>
+                </div>
+                <div class="card drop">
+                    <div class="front"></div>
+                    <div class="back"></div>
+                </div>
+                <div class="card bottom">
+                    <div class="front"></div>
+                    <div class="back"></div>
+                </div>
+            </div>
+            <div class="num">
+                <div class="card top">
+                    <div class="front"></div>
+                    <div class="back"></div>
+                </div>
+                <div class="card drop">
+                    <div class="front"></div>
+                    <div class="back"></div>
+                </div>
+                <div class="card bottom">
+                    <div class="front"></div>
+                    <div class="back"></div>
+                </div>
+            </div>
+            <div class="dots">
+                <div></div>
+                <div></div>
+            </div>
+            <div class="num">
+                <div class="card top">
+                    <div class="front"></div>
+                    <div class="back"></div>
+                </div>
+                <div class="card drop">
+                    <div class="front"></div>
+                    <div class="back"></div>
+                </div>
+                <div class="card bottom">
+                    <div class="front"></div>
+                    <div class="back"></div>
+                </div>
+            </div>
+            <div class="num">
+                <div class="card top">
+                    <div class="front"></div>
+                    <div class="back"></div>
+                </div>
+                <div class="card drop">
+                    <div class="front"></div>
+                    <div class="back"></div>
+                </div>
+                <div class="card bottom">
+                    <div class="front"></div>
+                    <div class="back"></div>
+                </div>
+            </div>
+            <div class="dots">
+                <div></div>
+                <div></div>
+            </div>
+            <div class="num">
+                <div class="card top">
+                    <div class="front"></div>
+                    <div class="back"></div>
+                </div>
+                <div class="card drop">
+                    <div class="front"></div>
+                    <div class="back"></div>
+                </div>
+                <div class="card bottom">
+                    <div class="front"></div>
+                    <div class="back"></div>
+                </div>
+            </div>
+            <div class="num">
+                <div class="card top">
+                    <div class="front"></div>
+                    <div class="back"></div>
+                </div>
+                <div class="card drop">
+                    <div class="front"></div>
+                    <div class="back"></div>
+                </div>
+                <div class="card bottom">
+                    <div class="front"></div>
+                    <div class="back"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    function topToDrop(element){
+        var top_card = element.querySelector('.top.moveme');   // найти именно требующий переворота из 2-х  
+        top_card.classList.remove('moveme');    // снять отметку
+        top_card.classList.replace('top', 'drop');
+    }
+    function dropToBottom(element){
+        var drop_card = element.querySelector('.drop');
+        drop_card.classList.replace('drop', 'bottom');
+    }
+    function bottomToTop(element){
+        var bottom_card = element.querySelector('.bottom');
+        bottom_card.classList.replace('bottom', 'top');
+    }
+    function markLastTop(element){
+        var last_top = element.querySelector('.top');
+        last_top.classList.add('moveme');
+    }
+    function flip(element){
+        markLastTop(element);  // отметить верхний как требующий переворота
+        bottomToTop(element);  // нижний переместить наверх
+        dropToBottom(element); // упавший сделать нижним
+        topToDrop(element);    // верхний сделать падающим
+    }
+    function changeText(element, n){
+        var top_part = element.querySelector('.num .top');
+        var drop_part = element.querySelector('.num .drop');
+        top_part.children[0].innerText = n;
+        drop_part.children[1].innerText = n;
+    }
+    function getNumText(element){
+        data =  element.querySelector('.top').children[0].innerText;
+        return data;
+    }
+    function updateTime(){
+        var dateObj = new Date();
+        
+        var seconds = dateObj.getSeconds();
+        var minutes = dateObj.getMinutes();
+        var hours = dateObj.getHours();
+
+        var timeArray = [
+            Math.trunc(hours/10), hours%10,
+            Math.trunc(minutes/10), minutes%10,
+            Math.trunc(seconds/10), seconds%10
+        ];
+
+        for(i=0; i < 6; i++){
+            if(getNumText(numsArray[i]) != timeArray[i] || getNumText(numsArray[i]) == ""){
+                flip(numsArray[i]);
+                changeText(numsArray[i], timeArray[i]);
+                getNumText(numsArray[i]);
+            }
+        }
+    }
+
+
+    let numsArray = [];
+    // собрать в массив каждый из элементов листающихся блоков
+    for(i = 0; i < 6; i++){
+        numsArray.push(document.querySelectorAll('.num')[i]);
+    }
+    setInterval(updateTime, 1000);
+</script>
+</html>

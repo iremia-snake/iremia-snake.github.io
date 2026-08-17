@@ -6,7 +6,7 @@
     <title>Document</title>
     <style>
         html, body{
-            height: 110%;
+            height: 100%;
             padding: 0;
             margin: 0;
         }
@@ -15,108 +15,143 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            background-color: black;
+            flex-wrap: wrap;
+            background-color: rgb(0, 0, 0);
         }
-        .button{
+        .bubble-button-container{
+            position: relative;
             --color1: rgb(0, 255, 149);
             --color2: blue;
+            --b-radius: 1em;
+            --b-width: .2em;
+            margin: 1em;
+        }
+        .bubble-button-container:active>.bubble-button{
+            transform: translateY(-0.7em);
+            transition: transform 0.13s ease-out;
+        }
+        .bubble-button{
             display: block;
             position: relative;
-            z-index: 0;
-            width: 220px;
-            height: 70px;
-            background-color: rgb(70, 70, 70);
-            border-radius: 20px;
-
-            line-height: 70px;
+            width: max-content;
+            border-radius: var(--b-radius);
+            margin: calc(var(--b-width));
+            padding: 1em 2em;
+            line-height: 1em;
             color: white;
             font-size: 20px;
             text-align: center;
-
             transition: transform 0.23s ease-out;
+            z-index: 0;
+        }
 
-            margin: 10px 20px;
+        .bubble-button::before{
+            content: '';
+            position: absolute;
+            inset: calc(var(--b-width) * -1);
+            background-image: linear-gradient(
+                -45deg, 
+                var(--color2) 25%,
+                var(--color1) 25%, 
+                var(--color1) 75%,
+                var(--color2) 75%
+            );
+            border-radius: calc(var(--b-radius) + var(--b-width));
+            background-size: 200%;
+            animation: backMove 8s linear infinite;
+            z-index: -2;
         }
-        .button:hover{
-            transform: translateY(-10px);
-        }
-        .button::before{
+        .bubble-button::after{
             content: '';
             position: absolute;
             inset: 0;
-            background-image: linear-gradient(-45deg, var(--color2) 20%, var(--color1) 20%, var(--color1) 60%, var(--color2) 60%);
             border-radius: inherit;
+            background-color: rgb(21, 21, 21);
             z-index: -1;
-            background-size: 150%;
-            background-position: 0%;
-            animation: backMove 9s linear infinite;
-        }
-        .button::after{
-            content: '';
-            position: absolute;
-            inset: 5px;
-            border-radius: 15px;
-            background-color: inherit;
-            z-index: -1;
-            /* box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.5); */
         }
         @keyframes backMove {
             0%{
-                background-position: 300%;
+                background-position: 200% 0;
             }
             100%{
-                background-position: 0%;
+                background-position: 0 0;
             }
         }
         .bubble{
             display: block;
             position: absolute;
+            top: calc((100% - 1.2em)/2);
+            left: calc((100% - 1.2em)/2);
             transform: translate(-50%, -50%);
-            background-color: rgb(0, 255, 149);
+            background-color: var(--color1);
             border-radius: 50%;
-            width: 20px;
-            height: 20px;
-            /* animation: flyBubble 2s ease-out both; */
+            width: 1.2em;
+            height: 1.2em;
             animation: flyBubble 2s cubic-bezier(0.095, 0.62, 0.165, 0.5) both;
-            z-index: -1;
+            z-index: -3;
         }
         @keyframes flyBubble {
             0%{
-                transform: rotate(var(--r)) translate(0px);
+                transform: rotate(var(--rot)) translate(0px);
             }
             100%{
-                transform: rotate(var(--r)) translate(var(--l));
+                transform: rotate(var(--rot)) translate(var(--len));
             }
         }
     </style>
 </head>
 <body>
-    <div class="button">Button</div>
-    <div class="button">Button</div>
+    <div class="bubble-button-container">
+        <div class="bubble-button">Button</div>
+    </div>
+    <div class="bubble-button-container">
+        <div class="bubble-button">Button</div>
+    </div>
+    <div class="bubble-button-container">
+        <div class="bubble-button">Button</div>
+    </div>
+    <div class="bubble-button-container">
+        <div class="bubble-button">Button</div>
+    </div>
 </body>
 <script>
-    Array.from(document.querySelectorAll('.button')).forEach(element => {
-        element.onmouseover = mouseOverButton;
+    Array.from(document.querySelectorAll('.bubble-button-container')).forEach(element => {
+        eventControll(element);
     });
 
-    function mouseOverButton(event){
-        var thisButton = event.srcElement;
-        
-        for(let i = 0; i < 50; i++){
-            let bubble = document.createElement('div');
-            bubble.className = 'bubble';
-            bubble.style.left = thisButton.getBoundingClientRect().left + 110 + window.scrollX + 'px'; 
-            bubble.style.top = thisButton.getBoundingClientRect().top + 35 + window.scrollY + 'px'; 
-            // console.log(window.scrollY);
-            bubble.style.cssText += '--r: ' + Math.random() * 360 + 'deg';
-            bubble.style.cssText += '--l: ' + (70 + Math.random() * 100) + 'px';
-            var size = 5 + Math.random() * 20 + 'px';
-            bubble.style.width = size;
-            bubble.style.height = size;
-            if(Math.random() > .5){
-                bubble.style.background = 'blue';
+    function eventControll(eventElement){
+        let isActive = false;
+        eventElement.onclick = ()=>{
+            if(event.target === eventElement || true){ // и тут тоже
+                if(!isActive || true){ // убрать '|| true' для работы по наведению
+                    isActive = true;
+                    createBubbles(eventElement, 24); // .parentElement для активации на кнопке по наведению
+                }
             }
-            document.body.append(bubble);
+        }
+        eventElement.onmouseleave = ()=>{
+            if(event.target === eventElement){
+                isActive = false;
+            }
+        }
+    }
+
+    function test(){
+        console.log('it`s test');
+    }
+
+    function createBubbles(element, count){
+        for(let i = 0; i < count; i++){
+            let bubble = document.createElement('span');
+            bubble.className = 'bubble';
+            var size = 5 + Math.random() * 20;
+            bubble.style.cssText += '--rot: ' + Math.round(Math.random() * 360) + 'deg';
+            bubble.style.cssText += '--len: ' + Math.round(70 + Math.random() * 100) + 'px';
+            bubble.style.cssText += '--siz: ' + Math.round(size) + 'px';
+            if(Math.random() > .5){
+                bubble.style.backgroundColor = 'var(--color2)';
+            }
+            setTimeout(()=>{element.append(bubble);}, Math.random() * 40);
             setTimeout(()=>{bubble.remove()},1000 + Math.random() * 1000);
         }
     }
