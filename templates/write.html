@@ -1,0 +1,31 @@
+{% extends "wrapper.html" %}
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='CSS/forms.css') }}">
+{% endblock %}
+{% block title %}Создание записки{% endblock %}
+{% block content %}
+<h2 class="title text-center">Новая заметка</h2>
+<div class="strip my-standart"></div>
+<form action="" method="post" class="center">
+    <input type="text" name="title" class="center" placeholder="Заглавие">
+    <textarea type="text" name="text" class=""></textarea>
+    <input type="submit" value="Подтвердить">
+    <input type="text" name="datetime" id="dt" hidden>
+</form>
+<div class="strip strip-right my-standart"></div>
+<script>
+    function localTs() {
+        const d = new Date();
+        return Math.floor(Date.UTC(
+            d.getFullYear(),
+            d.getMonth(),
+            d.getDate(),
+            d.getHours(),
+            d.getMinutes(),
+            d.getSeconds()
+        ) / 1000);
+    }
+    document.getElementById('dt').value = localTs();
+</script>
+
+{% endblock %}

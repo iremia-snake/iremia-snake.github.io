@@ -1,0 +1,15 @@
+{% extends "wrapper.html" %}
+{% block head %}{% endblock %}
+{% block title %}Б_лог красного{% endblock %}
+{% block content %}
+<h2 class="title text-center">(б)лог</h2>
+<p class="text-center light-text bg-text-shadow">Мои редкие заметки, которые либо не подходят для размещения на канале, либо я считаю полезным показать их на бОльшую аудиторию.</p>
+<hr class="my-standart">
+{% if articles %}
+    {% for a in articles %}
+        {% include "include-article.html" with context %}
+    {% endfor %}
+{% else %}
+    <h3 class="text-center p-standart">Тут пока ничего нет (v_v)</h3>
+{% endif %}
+{% endblock %}

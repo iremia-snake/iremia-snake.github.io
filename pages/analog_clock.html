@@ -5,18 +5,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Аналоговые часы</title>
     <style>
+        html, body{
+            height: 100%;
+        }
         body{
+            margin: 0;
+            padding: 0;
             background-color: rgb(255, 255, 255);
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
         .clock{
-            --size: 400px;
+            --size: 80vmin;
             position: relative;
             width: var(--size);
             height: var(--size);
             background-color: rgb(241, 241, 241);
             /* background-image: radial-gradient(white 10px, rgb(180, 180, 180) 200px); */
             border-radius: 50%;
-            margin: auto;
+            /* margin: auto; */
             box-shadow:
                 .1em .4em .8em -.5em rgba(0, 0, 0, 0.5),
                 inset .1em .2em .3em rgba(255, 255, 255, 0.5),
@@ -76,8 +84,8 @@
             --m: 1;
             position: absolute;
             border-radius: 10px;
-            width: calc(1em * var(--m));
-            height: .15em;
+            width: calc(3% * var(--m));
+            height: .15rem;
             background-color: rgba(0, 0, 0, 0.4);
             left: 50%;
             top: 50%;

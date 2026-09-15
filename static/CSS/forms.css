@@ -1,0 +1,31 @@
+form{
+    display: block;
+    color: var(--dark-color)
+}
+form *{
+    font-size: 1em;
+}
+input, textarea{
+    display: block;
+    padding: .5em;
+    border-radius: .3em;
+    border: .15rem solid var(--primary-color);
+    color: var(--dark-color);
+    margin: 1em;
+}
+textarea{
+    min-width: 90%;
+    max-width: 90%;
+    min-height: 12rem;
+    margin: 0 auto;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+input[type="button"], input[type="submit"]{
+    background-color: var(--secondary-color);
+    color: var(--dark-color);
+}
+input[type="button"]:hover, input[type="submit"]:hover{
+    background-color: var(--dark-color);
+    color: var(--secondary-color);
+}
+input[hidden]{display: none;;}

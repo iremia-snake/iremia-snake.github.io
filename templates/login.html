@@ -1,0 +1,19 @@
+{% extends "wrapper.html" %}
+{% block title %}Вход{% endblock %}
+{% block content %}
+<div class="strip"></div>
+<div class="red-frame m-big light-shadow p-standart" style="max-width: 400px; margin: 40px auto;">
+    <h2 class="title text-center">Вход</h2>
+    {% if error %}
+        <p class="light-text text-center" style="color: #c00;">{{ error }}</p>
+    {% endif %}
+
+    <form method="post">
+        <input type="password" name="password" placeholder="Пароль"
+               autofocus required
+               style="width: 100%; padding: 8px; margin: 10px 0;">
+        <button type="submit" style="width: 100%; padding: 8px;">Войти</button>
+    </form>
+</div>
+<div class="strip strip-right"></div>
+{% endblock %}

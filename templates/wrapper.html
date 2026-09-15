@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='CSS/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='CSS/nav.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='CSS/icons.css') }}">
+    <script src="{{ url_for('static', filename='JS/menu.js') }}"></script>
+    <script src="{{ url_for('static', filename='JS/audioplayer.js') }}"></script>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='images/favicon.png') }}" type="image/x-icon">
+    <meta name="description" content="Личная страница фурри лиса по имени Рестифосс (Restyfoss). Сокращенно - Рести. Здесь информация об этом красном лисе и ссылки на места его обитания"/>
+    {% block head %}{% endblock %}
+    <title>{% block title %}{% endblock %}</title>
+</head>
+<body>
+    <header>
+        <a href="{{ url_for('index') }}" class="no-link">
+            <h1>═╬═ Restyfoss&nbsp;Site ═╬═</h1>
+        </a>
+        <nav class="light-shadow">
+            <ul class="nav-menu">
+                {% if session.get('is_admin') %}
+                <li> Админ
+                    <ul class="submenu">
+                        <li><a href="{{ url_for('create_article') }}">Новая статья</a></li>
+                        <li><a href="{{ url_for('logout') }}">Выйти</a></li>
+                        <li><a href="{{ url_for('index') }}">Панелька</a></li>
+                    </ul>
+                </li>
+                {% endif %}
+                <li>
+                    <a href="pages/links.html">Программы и драйвера</a>
+                </li>
+                <li>
+                    <a href="{{ url_for('b_log') }}">(Б)лог Рести</a>
+                </li>
+                <li>Генераторы разного
+                    <ul class="submenu">
+                        <li>
+                            <a href="pages/gradient.html">Градиент</a>
+                        </li>
+                        <li>
+                            <a href="pages/tree.html">Деревья</a>
+                        </li>
+                        <li>
+                            <a href="pages/branch.html">Ветка</a>
+                        </li>
+                        <!-- <li>
+                            <a href="pages/stars.html">Созвездия</a>
+                        </li> -->
+                    </ul>
+                </li>
+                <li>HTML / CSS / JS
+                    <ul class="submenu">
+                        <li>Кнопки
+                            <ul class="submenu">
+                                <li><a href="pages/bubble_button.html">Пузырьки на js</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="pages/digital_clock.html">Часы с переворотом</a></li>
+                        <li><a href="pages/analog_clock.html">Часы стрелочные</a></li>
+                        <li><a href="pages/cube/index.html">Куб</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+    </header>
+    <img src="{{ url_for('static', filename='images/compressed/fox.png') }}" alt="my fursona" class="bg-image">
+    <main class="light-shadow p-standart round-1">
+        {% block content %}{% endblock %}
+    </main>
+    <footer class="light-shadow p-standart">
+        <div class="red-frame">
+            <p class="my-standart">Ну нету у меня пока карты сайта, хотя уже можно начать создавать</p>
+            <br>
+            <p class="text-bold">Где ещё можно встретить лиса?</p>
+            <hr class="m-small center">
+            <p class="m-standart">
+                Telegram: <a class="p-small" href="https://t.me/restyfoss">@restyfoss</a>
+                <span class="red-splitter m-standart"></span>
+                VK: <a class="p-small" href="https://vk.ru/restyfoss">Рестифосс - Красный Лис</a>
+                <span class="red-splitter m-standart"></span>
+                Discord: <a class="p-small" href="https://discordapp.com/users/754897284260429945">restyfoss</a>
+            </p>
+            <hr class="m-small center">
+            <p>═╬═ 2026 ═╬═</p>
+        </div>
+    </footer>
+</body>
+</html>
