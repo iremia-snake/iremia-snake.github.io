@@ -1,7 +1,17 @@
-<div class="p-standart center">
-    <div class="note p-standart round-1 light-shadow">
+
+    <div class="red-frame p-standart round-1 light-shadow m-big container center" style="background-color: var(--third-color);">
         <h3 class="note-header">{{ a.title }}</h3>
-        <p class="text-left">{{ a.text }}</p>
+        <p class="text-left text-normal-wrap">{{ a.text }}</p>
         <p class="light-text text-right">{{ a.date | dt}}</p>
+        {% if session.get('is_admin') %}
+        <div class="text-left">
+            <a href="{{ url_for('edit_article', article_id=a.id) }}">Изменить</a>
+            <br>
+            <!-- <a href="{{ url_for('del_article', article_id=a.id) }}">Удалить</a> -->
+            <form method="post" action="{{ url_for('del_article', article_id=a.id) }}"
+                onsubmit="return confirm('Удалить заметку?');">
+                <button type="submit">Удалить</button>
+            </form>
+        </div>
+        {% endif %}
     </div>
-</div>

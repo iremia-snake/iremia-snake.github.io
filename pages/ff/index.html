@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Игра</title>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
+        height: 100%;
+        overflow: hidden; /* убрать скролл при тапах */
+    }
+
+    body {
+        background-color: rgb(0,0,40);
+        background-image: radial-gradient(circle at top , rgb(46, 46, 94) -50%, transparent);
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 1rem;
+        touch-action: manipulation; /* отключить двойной тап-зум */
+        color: #e1e1e1;
+    }
+
+    canvas#game {
+        display: block;
+        background-color: white;
+        background-image: url(back.png);
+        image-rendering: pixelated;
+        image-rendering: crisp-edges;
+        background-size: cover;
+
+        /* Адаптивные размеры */
+        width: min(95vw, 50rem);
+        height: auto;
+        aspect-ratio: 800 / 600;
+        max-height: 70vh;
+        margin: 0;
+        border-radius: 4px;
+        border: .2rem solid #e1e1e1;
+    }
+
+    .m-fit {
+        width: min(95vw, 50rem);
+        margin: 0.5rem auto 0;
+        font-size: clamp(0.7rem, 2.5vw, 1rem);
+    }
+
+    .pixel-font {
+        font-weight: 100;
+        line-height: 1.2em;
+        font-family: PixelFont, monospace;
+    }
+
+    .text-center { text-align: center; }
+
+    /* Показать подсказки в зависимости от устройства */
+    .hint-desktop { display: block; }
+    .hint-mobile  { display: none; }
+
+    @media (hover: none) and (pointer: coarse) {
+        .hint-desktop { display: none; }
+        .hint-mobile  { display: block; }
+    }
+</style>
+</head>
+<body>
+    <canvas id="game" width="800" height="600">
+        Canvas не поддерживается в этом браузере
+    </canvas>
+
+    <h3 class="m-fit pixel-font text-center hint-desktop">
+        <span>Пробел</span> - прыжок, перезапуск игры<br>
+    </h3>
+
+    <h3 class="m-fit pixel-font text-center hint-mobile">
+        <span>Тап по экрану</span> - прыжок, перезапуск игры<br>
+    </h3>
+</body>
+<script>
+    'use-strict'
+
+    const canvas = document.getElementById("game");
+    const ctx = canvas.getContext("2d");
+    ctx.imageSmoothingEnabled = false;
+
+    const myFont = new FontFace('PixelFont', 'url(./Koganejidainogemu_0.ttf)', {
+        weight: '400',
+        style: 'normal'
+    });
+    let fill_char = '   ';
+    myFont.load().then(function(loadedFont){
+        document.fonts.add(loadedFont);
+        fill_char = ' ';
+    });
+
+    const FPS = 30;
+    const SPEED = 5;
+
+    const CITATES = [
+        "Путешествие в сотни миль начинается с одного шага.",
+        "Существовать — это быть в гармонии.",
+        "Когда я освобождаюсь от того, кто я есть,\nя становлюсь тем, кем я могу быть.",
+        "Никогда не делает ошибок только тот,\nкто не пробует ничего нового.",
+        "Неудача — это просто возможность начать снова,\nно уже более мудро.",
+        " Наше сознание — это все.\nВы становитесь тем, о чем думаете.",
+        "Единственное счастье в жизни\n— это постоянное стремление вперед.",
+        "Ни разу не упасть — не самая большая заслуга в жизни.\nГлавное каждый раз подниматься.",
+        "Единственный способ сделать что-то очень хорошо\n— любить то, что ты делаешь.",
+        "Приносить пользу миру\n— это единственный способ стать счастливым.",
+        "Я лучше умру от страсти, чем от скуки."
+    ]
+
+    let gameloop; // interval for game update
+
+
+    class Fox{
+        constructor(x, y, vy, gravity, jumpForce){
+            this.x = x;           // позиция по X
+            this.y = y;           // позиция по Y
+            this.vy = vy;         // вертикальная скорость
+            this.gravity = gravity; // гравитация
+            this.jumpForce = jumpForce; // сила прыжка
+            this.size = 28;       // размер птицы
+
+            this.img = new Image();
+            this.img.src = 'fox.png';
+            this.img2 = new Image();
+            this.img2.src = 'fox2.png';
+        }
+        update(){
+            this.vy += this.gravity;  // гравитация ускоряет вниз
+            if((this.vy < 0) && (this.y < this.size/2)) {
+                this.y = this.size/2-1;
+            }else{
+                this.y += this.vy;
+            }
+        }
+        draw(){
+            
+           
+            if(this.vy < 3){
+                ctx.fillStyle = "#00ff00";
+                ctx.drawImage(this.img, this.x-this.size, this.y-this.size/1.5, this.size*1.75, this.size*1.25);
+
+            }else{
+                ctx.fillStyle = "#ff0000";
+                ctx.drawImage(this.img2, this.x-this.size, this.y-this.size/1.5, this.size*1.75, this.size*1.25);
+            }
+            // ctx.fillRect(this.x-this.size/2, this.y-this.size/2, this.size, this.size);
+        }
+        jump() {
+            if(this.vy < -this.jumpForce/2 && this.y > 0){
+                this.vy += -this.jumpForce/1.6;
+            }else{
+                this.vy = -this.jumpForce;
+            }
+        }
+    }
+
+    class Pipe{
+        constructor(x, y, height = canvas.height, width = 60){
+            this.x = x;           // позиция по X
+            this.y = y;           // позиция по Y
+            this.height = height; // высота трубы
+            this.width = width;   // ширина трубы;
+            this.passed = false;
+            this.img = new Image();
+            this.img.src = 'pipe.png';
+        }
+        update(){
+            this.x -= SPEED;
+        }
+        draw(){
+        //    ctx.fillStyle = "#00ff00";
+        //    ctx.fillRect(this.x-this.width/2, this.y-this.height/2, this.width, this.height);
+           ctx.drawImage(this.img, this.x-this.width/2, this.y-this.height/2, this.width, this.height);
+        }
+    }
+
+    class Score{
+        constructor(){
+            this.score = 0;
+        }
+
+        add() {
+            this.score++;
+        }
+
+        draw() {
+            ctx.textAlign = "left";
+            ctx.textBaseline = "top";
+            ctx.fillStyle = "#FF0000";
+            ctx.font = "20px PixelFont";
+            ctx.fillText("cчёт: " + this.score, 10,10);
+        }
+    }
+
+    let jumpPressed = false;
+    let pressed = false;
+
+    // === Управление ===
+    // === Пробел (ПК) ===
+    document.addEventListener('keydown', (e) => {
+        if (e.code === 'Space') {
+            if(!pressed){
+                pressed = true;
+                jumpPressed = true;
+            }
+            e.preventDefault();
+        }
+    });
+    document.addEventListener('keyup', (e) => {
+        if (e.code === 'Space') {
+            pressed = false;
+        }
+    });
+
+    // === Тач (мобильные) ===
+    canvas.addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        if (!pressed) {
+            pressed = true;
+            jumpPressed = true;
+        }
+    });
+
+    canvas.addEventListener('touchend', (e) => {
+        e.preventDefault();
+        pressed = false;
+    });
+
+    // разные функции
+    function randInt(min, max){
+        return Math.round(min + Math.random() * (max-min));
+    }
+
+    function beautifulPrint(text, posX, posY, pause = 60, fill_char = '   '){
+        function pprint(text, posX, posY, pause, start_pause = 0){
+            for(let i = 0; i < text.length; i++){
+                setTimeout(()=>{
+                    ctx.fillText(fill_char.repeat(i)+text[i]+fill_char.repeat(text.length - i - 1), posX, posY);
+                }, start_pause + i*pause);
+            }
+        }
+        entersymbol = text.indexOf('\n');
+        font_size = Number(ctx.font.slice(0, ctx.font.indexOf('p')));
+        if(entersymbol != -1){
+            pprint(text.slice(0, entersymbol), posX, posY, pause);
+            pprint(text.slice(entersymbol, text.length), posX, posY + font_size, pause, start_pause = 800);
+        }else{
+            pprint(text, posX, posY, pause);
+        }
+        
+    }
+
+    function pipeCreate(){
+        let gap = 120;
+        let padding = 20;
+        let random_point = randInt(0 + padding + gap/2, canvas.height - padding - gap/2);
+        let top_pipe =    new Pipe(canvas.width + 60, random_point - canvas.height/2 - gap/2);
+        let bottom_pipe = new Pipe(canvas.width + 60, random_point + canvas.height/2 + gap/2);
+        return [top_pipe, bottom_pipe];
+    }
+
+    function segment_collision(a1,a2,b1,b2){
+        return (a1<b2 && a2>b1);
+    }
+
+    function checkCollisions() {
+    for (let pipe of pipes) {
+        if(
+            segment_collision(bird.x - bird.size/2, bird.x + bird.size/2, pipe.x - pipe.width/2, pipe.x + pipe.width/2) &&
+            segment_collision(bird.y - bird.size/2, bird.y + bird.size/2, pipe.y - pipe.height/2, pipe.y + pipe.height/2)){
+            return true;
+        }
+    }
+    return false;
+}
+
+    function dead(){
+        clearInterval(gameloop);
+
+        document.addEventListener('keydown', (e) => {
+        if (e.code === 'Space') {
+            location.reload();
+        }
+        });
+        canvas.addEventListener('touchstart', (e) => {
+            location.reload();
+        });
+
+        
+        ctx.fillStyle = "rgba(245, 0, 0, 0.2)";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = "#FFFFFF";
+        ctx.font = "60px PixelFont";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        beautifulPrint("GAME OVER", canvas.width/2, canvas.height/2, 60, fill_char);
+        setTimeout(()=>{
+            ctx.font = "1.05em PixelFont";
+            beautifulPrint(CITATES[randInt(0, CITATES.length-1)], canvas.width/2, canvas.height/2+60, 60, fill_char);
+        }, 500)
+        // setTimeout(()=>{alert('==============\nGame Over\n==============')}, 100);
+    }
+
+    let frameCounter = 0;
+    let pipes = [];
+
+    // === цикл игры ===
+    function update(){
+        frameCounter++;
+
+        // Создаем новую трубу каждую секунду с вероятностью
+        if (frameCounter % (FPS*2) == 0) {
+            if(Math.random() < 0.9){
+                let p = pipeCreate();
+                pipes.push(p[0]);
+                pipes.push(p[1]);
+            }
+        }
+
+        if(jumpPressed == true){
+            bird.jump();
+            jumpPressed = false;
+        }
+
+        ctx.clearRect(0,0, canvas.width, canvas.height);
+        bird.update();
+        bird.draw();
+
+        for (let i = pipes.length-1; i > 0; i--) {
+            pipes[i].update();
+            pipes[i].draw();
+
+
+            // счет
+            if(pipes[i].y > canvas.height/2 && !pipes[i].passed && pipes[i].x + pipes[i].width/2 < bird.x - bird.size/2){
+                pipes[i].passed = true;
+                score.add();
+            }
+
+            // удаление труб за границей экрана
+            if (pipes[i].x < -pipes[i].width/2) {
+                pipes.splice(i, 1);
+            }
+
+        }
+
+        score.draw();
+
+        // столкновение
+        if(bird.y + bird.size > canvas.height || checkCollisions()){
+            dead();
+        }
+    }
+
+    // === инициализация ===
+    const bird = new Fox(x = 350, y = 0, 0, gravity = 1, jumpForce = 12);
+    const score = new Score();
+    if (canvas.getContext) {
+        const ctx = canvas.getContext("2d");
+
+        // document.addEventListener('keydown', (e) => {
+        // if (e.code === 'Space') {
+        //     if(frameCounter == 0){
+        //         gameloop = setInterval(update, 1000/FPS);
+        //     }
+        //     e.preventDefault();
+        // }
+        // });
+    gameloop = setInterval(update, 1000/FPS);
+
+        
+    }
+
+</script>
+</html>

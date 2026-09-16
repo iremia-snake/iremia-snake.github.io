@@ -104,6 +104,9 @@ blockquote>*::after {content: ' “';}
 img{
     max-width: 100%;
 }
+.container{
+    width: 80%;
+}
 
 .title{
     letter-spacing: 0.1em;
@@ -142,6 +145,9 @@ img{
 }
 .text-right{
     text-align: right;
+}
+.text-normal-wrap{
+    white-space: pre-wrap;
 }
 .p-small{
     padding: .5em;
@@ -413,6 +419,9 @@ img{
 }
 @media screen and (max-width: 640px) {
     main{
+        width: 100%;
+    }
+    .container{
         width: 100%;
     }
     .bg-image{
