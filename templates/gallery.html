@@ -1,0 +1,30 @@
+{% extends "wrapper.html" %}
+
+{% block title %}
+Фотогалерея
+{% endblock %}
+
+{% block content %}
+
+<h1 class="title text-center">Фотографии</h1>
+<hr class="my-standart">
+<div class="row">
+    {% with imgpath = 'images/compressed/clouds.jpg', imgname = "облк" %}
+        {% include "include_photoframe.html" %}
+    {% endwith %}
+    
+    {% with imgpath = 'images/compressed/clouds.jpg', imgname = "облк" %}
+        {% include "include_photoframe.html" %}
+    {% endwith %}
+    
+    {% with imgpath = 'images/compressed/clouds.jpg', imgname = "облк" %}
+        {% include "include_photoframe.html" %}
+    {% endwith %}
+    
+    {% with imgpath = 'images/compressed/clouds.jpg', imgname = "облк" %}
+        {% include "include_photoframe.html" %}
+    {% endwith %}
+</div>
+
+
+{% endblock %}

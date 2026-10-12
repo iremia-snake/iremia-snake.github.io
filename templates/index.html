@@ -11,7 +11,10 @@
             <table>
                 <tr>
                     <td><img src="{{ url_for('static', filename='images/telegram_drawing.png') }}" width="64" class="drawing-image"></td>
-                    <td><a href="https://t.me/RestyfossNotes" class="text-bold">Записки рыжего лиса</a> – Мой маленький глупенький telegram канал</td>
+                    <td>
+                        {% if outer_links['telegram_channel'] %}
+                        <a href="{{ outer_links['telegram_channel']['url'] }}" class="text-bold">{{ outer_links['telegram_channel']['title'] }}</a> – Мой маленький глупенький telegram канал</td>
+                        {% endif %}
                 </tr>
             </table>
         

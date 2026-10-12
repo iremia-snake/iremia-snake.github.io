@@ -1,0 +1,55 @@
+{% extends "wrapper.html" %}
+{% block head %}
+<style>
+    @font-face {
+        font-family: 'minecraft';
+        src: url("{{ url_for('static', filename='fonts/minecraft-normal-0000-07ff-MVYMY4PV.woff2') }}") format('woff2'),
+        url("{{ url_for('static', filename='fonts/minecraft-normal-0000-07ff-MVYMY4PV.woff2') }}") format('woff2');
+        font-weight: 100;
+        font-style: normal;
+        font-display: swap;
+    }
+    .minecraft{
+        position: relative;
+        font-family: 'minecraft';
+        background-size: auto 100% ;
+        image-rendering: pixelated;
+        color: #afafaf;
+        background-image: linear-gradient(90deg, rgba(0, 0, 0, 0.7),rgba(0, 0, 0, 0.7)), url("{{ url_for('static', filename='images/minecraft/dirt.png') }}");
+        text-shadow: 0em .1em 0 black;
+    }
+    .minecraft>*{
+        vertical-align: middle;
+    }
+    .minecraft .server_img{
+        height: 5em;
+    }
+    @media screen and (max-width: 800px) {
+        .minecraft div{
+            font-size: .8rem;
+        }
+        .minecraft h2{
+            font-size: 1rem;
+        }
+    }
+
+</style>
+{% endblock %}
+{% block title %}Minecraft сервер{% endblock %}
+{% block content %}
+<h2 class="text-center my-small">Мой Minecraft сервер</h2>
+<p class="my-standart text-center">
+    Сервер запускается по особым случаям, потому что он бесплатный и сам без игроков не работает.
+</p>
+<div class="minecraft row p-standart round-1">
+    {% if outer_links['minecraft_server'] %}
+    <div>
+        <img class="server_img" src="{{ url_for('static', filename='images/minecraft/server_image.png') }}" alt="minecraft server image">
+    </div>
+    <div>
+        <h2 style="color: #f0f0f0;">{{ outer_links['minecraft_server']['url'] }}</h2>
+        <div><span style="color: #FFFF55;">V1.0</span> Добро пожаловать, товарищ,<br>на <span style="color: #55FF55;">Minecraft</span> сервер <span style="color: #FF5555;">Красного Лиса Рести!</span></div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

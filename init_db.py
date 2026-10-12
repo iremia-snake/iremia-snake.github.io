@@ -7,7 +7,16 @@ CREATE TABLE IF NOT EXISTS articles (
     id       INTEGER PRIMARY KEY AUTOINCREMENT,
     title    TEXT NOT NULL,
     text     TEXT NOT NULL,
+    imgpath  TEXT,
     date     INTEGER NOT NULL DEFAULT (unixepoch())
+);
+
+CREATE TABLE IF NOT EXISTS links (
+    id          INTEGER PRIMARY KEY AUTOINCREMENT,
+    name        TEXT NOT NULL,
+    description TEXT,
+    url         TEXT NOT NULL,
+    title      TEXT NOT NULL
 );
 """
 

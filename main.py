@@ -3,6 +3,8 @@ from flask import redirect, request, abort, url_for, session
 from db import get_db, init_app
 from datetime import datetime, timezone
 import os
+from os import path
+import uuid
 from dotenv import load_dotenv
 from functools import wraps
 from werkzeug.security import check_password_hash
@@ -12,6 +14,10 @@ load_dotenv()
 app = Flask(__name__, static_folder='static')
 app.secret_key = os.environ['SECRET_KEY']
 ADMIN_PASSWORD_HASH = os.environ['ADMIN_PASSWORD_HASH']
+
+# параметры загружаемых изображений
+app.config['UPLOAD_FOLDER'] = 'uploads'
+ALLOWED_EXTENSIONS = ('png', 'jpg', 'jpeg', 'gif', 'webp')
 
 # закрыть соединение при ошибке
 init_app(app)
@@ -27,6 +33,7 @@ def login_required(view):
 
 
 # === Функции ===
+
 # фильтр для изменения даты под формат
 @app.template_filter('dt')
 def format_dt(value, fmt='%d.%m.%Y %H:XX'):
@@ -38,10 +45,54 @@ def format_dt(value, fmt='%d.%m.%Y %H:XX'):
         return value
 
 
+# получение ссылки через контект-процессор
+@app.context_processor
+def inject_links():
+    db = get_db()
+    outer_links = db.execute(
+        "SELECT name, url, title FROM links"
+    ).fetchall()
+    outer_links = {
+        i['name']: {
+            'url': i['url'],
+            'title': i['title'] if i['title'] else i['url'] 
+            } for i in outer_links
+        }
+
+    return dict(outer_links = outer_links)
+
+
+# доступ к media
+@app.route('/media/<string:filename>')
+def uploaded(filename):
+    return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
+
+
+
 # === Главная ===
 @app.route('/')
 def index():
     return render_template('index.html')
+
+
+
+# работа с файлами
+def save_file(file):
+    ext = file.filename[file.filename.rfind('.')+1:]
+    if ext in ALLOWED_EXTENSIONS:
+        file.filename = str(uuid.uuid1()) + '.' + ext
+        file.save(os.path.join(app.config['UPLOAD_FOLDER'], file.filename))
+        return file.filename
+
+
+def delete_file(filename):
+    if not filename:
+        return
+    path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+    if os.path.exists(path):
+        os.remove(path)
+
+
 
 
 # === Создание записки ===
@@ -52,9 +103,16 @@ def create_article():
         title = request.form['title']
         text = request.form['text']
         datetime = request.form['datetime']
+        image = request.files['image']
         if title != "" and text != "":
+            imagename = ""
+            if image and image.filename != "":
+                imagename = save_file(image)
+
             db = get_db()
-            db.execute("INSERT INTO articles (title, text, date) VALUES (?, ?, ?)", (title, text, datetime))
+            db.execute("INSERT INTO articles (title, text, date, imgpath) VALUES (?, ?, ?, ?)",
+                (title, text, datetime, imagename)
+            )
             db.commit()
             return redirect(url_for('b_log'))
     
@@ -76,12 +134,27 @@ def edit_article(article_id):
     if request.method == 'POST':
         title = request.form['title'].strip()
         text = request.form['text'].strip()
-        date = request.form.get('datetime') or article['date']
+        date = request.form['date'].strip()
+        hour = request.form['time']
+        new_image = request.files['image']
+        delimg = request.form.get('del_img')
+
+        dt = datetime.strptime(date, "%Y-%m-%d").replace(
+            hour=int(hour), tzinfo=timezone.utc
+        ).timestamp()
+        ts = int(dt)
 
         if title and text:
+            imagename = article['imgpath']
+            if delimg:
+                delete_file(article['imgpath'])
+                imagename = ""
+            elif new_image and new_image.filename:
+                delete_file(article['imgpath'])
+                imagename = save_file(new_image)
             db.execute(
-                "UPDATE articles SET title = ?, text = ?, date = ? WHERE id = ?",
-                (title, text, date, article_id)
+                "UPDATE articles SET title = ?, text = ?, date = ?, imgpath = ? WHERE id = ?",
+                (title, text, ts, imagename, article_id)
             )
             db.commit()
             return redirect(url_for('b_log', article_id=article_id))
@@ -105,11 +178,12 @@ def b_log():
 def del_article(article_id):
     db = get_db()
     article = db.execute(
-        "SELECT id FROM articles WHERE id = ?", (article_id,)
+        "SELECT id, imgpath FROM articles WHERE id = ?", (article_id,)
     ).fetchone()
     if article is None:
         abort(404)
 
+    delete_file(article['imgpath'])
     db.execute("DELETE FROM articles WHERE id = ?", (article_id,))
     db.commit()
     return redirect(url_for('b_log'))
@@ -135,6 +209,38 @@ def logout():
     return redirect(url_for('index'))
 
 
+# Админ-панель
+@app.route('/admin', methods=['get', 'post'])
+@login_required
+def admin():
+    if request.method == 'POST':
+        l_name = request.form['name']
+        l_description = '' #request.form['desc']
+        l_url = request.form['address']
+        l_title = request.form['title']
+        if l_name != "" and l_url != "":
+            db = get_db()
+            db.execute(
+                "INSERT INTO links (name, description, url, title) VALUES (?, ?, ?, ?)", (l_name, l_description, l_url, l_title)
+            )
+            db.commit()
+        return redirect(url_for('admin'))
+
+    db = get_db()
+    links = db.execute(
+        "SELECT * FROM links"
+    ).fetchall()
+    return render_template('panel.html', links = links)
+
+@app.route('/admin/dellink/<int:link_id>')
+@login_required
+def del_link(link_id):
+    db = get_db()
+    db.execute("DELETE FROM links WHERE id = ?", (link_id,))
+    db.commit()
+
+    return redirect(url_for('admin'))
+
 # === другие страницы ===
 
 # Статические страницы
@@ -144,6 +250,17 @@ def pages(filename):
 
 
 # Галерея
-@app.route('/galery')
-def galery():
-    return abort(404)
+@app.route('/gallery')
+def gallery():
+    return render_template('gallery.html')
+
+# Minecraft сервер
+@app.route('/minecraft')
+def minecraft():
+    return render_template('mine.html')
+
+
+
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('404.html'), 404

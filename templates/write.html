@@ -1,6 +1,5 @@
 {% extends "wrapper.html" %}
 {% block head %}
-<link rel="stylesheet" href="{{ url_for('static', filename='CSS/forms.css') }}">
 {% endblock %}
 
 {% block title %}{% if article %}Редактирование{% else %}Создание записки{% endif %}{% endblock %}
@@ -11,23 +10,39 @@
 </h2>
 <div class="strip my-standart"></div>
 
-<form method="post" class="center">
-    <input type="text" name="title" class="center" placeholder="Заглавие"
-           value="{{ form.title if form else (article.title if article else '') }}"
-           required autofocus>
-
-    <textarea name="text"
-              placeholder="Текст заметки"
-              required>{{ form.text if form else (article.text if article else '') }}</textarea>
-
-    <input type="submit"
-           value="{% if article %}Сохранить{% else %}Подтвердить{% endif %}">
-
-    <input type="text" name="datetime" id="dt" hidden>
+<form method="post" class="center" enctype="multipart/form-data">
+    <div class="text-center">
+        <input type="text" name="title" class="center" placeholder="Заглавие"
+               value="{{ article.title if article }}"
+               required autofocus>
+    </div>
+    <div class="container center">
+        {% if article and article.imgpath %}
+            <div class="m-small text-center">
+                <img src="{{ url_for('uploaded', filename = article.imgpath) }}" alt="" class="img-small">
+            </div>
+            <div class="text-center">
+                <label>
+                    <input type="checkbox" name="del_img">
+                    Удалить файл
+                </label>
+            </div>
+        {% endif %}
+        <input type="file" id="iamge" name="image" accept="image/png, image/jpeg, image/webp, image/gif" class="my-small">
+        <textarea name="text"
+                placeholder="Текст заметки"
+                required>{{ article.text if article }}</textarea>
+        {% if article %}
+        <input type="date" name="date" id="date" value="{{ article.date|dt('%Y-%m-%d') if article }}" class="my-small">
+        <input type="number" name="time" id="time" min="0" max="23" value="{{ article.date|dt('%H') if article }}" class="my-small">
+        {% endif %}
+        <input type="text" id="dt" name="datetime" hidden>
+        <input type="submit" value="{% if article %}Сохранить{% else %}Подтвердить{% endif %}" class="m-big my-small">
+    </div>
 </form>
 
 <div class="strip strip-right my-standart"></div>
-
+{% if not article %}
 <script>
     function localTs() {
         const d = new Date();
@@ -42,4 +57,5 @@
     }
     document.getElementById('dt').value = localTs();
 </script>
+{% endif %}
 {% endblock %}

@@ -1,0 +1,52 @@
+{% extends "wrapper.html" %}
+{% block head %}
+
+{% endblock %}
+{% block title %}Админ-панель{% endblock %}
+{% block content %}
+    <h1 class="title text-center">Админ-панель</h1>
+    <hr class="my-standart">
+    <h4 class="p-small">Cсылки на внешние ресурсы</h4>
+    <div style="overflow-x: auto;">
+        <table class="border_table">
+            <tr>
+                <th>Имя внешней ссылки</th>
+                <!-- <th>Описание</th> -->
+                <th>Адрес</th>
+                <th>Текст</th>
+                <th></th>
+            </tr>
+            {% for l in links %}
+            <tr>
+                <td>{{ l.name }}</td>
+                <!-- <td>{{ l.description }}</td> -->
+                <td><a href="{{ l.link }}">{{ l.url }}</a></td>
+                <td>{{ l.title }}</td>
+                <td class="text-center">
+                    <h3><a href="{{ url_for('del_link', link_id=l.id) }}" style="text-decoration: none;">✕</a></h3>
+                </td>
+            </tr>
+            {% endfor %}
+            <form method="post">
+                <tr>
+                    <td><input type="text" name="name" id="name"></td>
+                    <!-- <td><input type="text" name="desc" id="desc"></td> -->
+                    <td><input type="text" name="address" id="address"></td>
+                    <td><input type="text" name="title" id="title"></td>
+                    <td><input type="submit" value="+"></td>
+                </tr>
+            </form>
+        </table>
+    </div>
+    <hr class="my-standart">
+    <h4 class="p-small">Список имеющихся имен ссылок</h4>
+    <ul>
+        <li>telegram_channel</li>
+        <li>telegram_account</li>
+        <li>vk_page</li>
+        <li>minecraft_server</li>
+        <li>discord_account</li>
+        <!-- <li>discord_channel</li>
+        <li>youtube_channel</li> -->
+    </ul>
+{% endblock %}

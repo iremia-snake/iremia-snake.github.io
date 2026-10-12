@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='CSS/forms.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='CSS/style.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='CSS/nav.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='CSS/icons.css') }}">
@@ -25,50 +26,50 @@
                     <ul class="submenu">
                         <li><a href="{{ url_for('create_article') }}">Новая статья</a></li>
                         <li><a href="{{ url_for('logout') }}">Выйти</a></li>
-                        <li><a href="{{ url_for('index') }}">Панелька</a></li>
+                        <li><a href="{{ url_for('admin') }}">Панелька</a></li>
                     </ul>
                 </li>
                 {% endif %}
                 <li>
-                    <a href="pages/links.html">Ссылки на офф. сайты</a>
+                    <a href="/pages/links.html">Ссылки на офф. сайты</a>
                 </li>
                 <li>
                     <a href="http://cherkaap.beget.tech">Доска (Alpha)</a>
                 </li>
-                <!-- <li>
-                    <a href="{{ url_for('galery') }}">Фотогалерея (нет)</a>
-                </li> -->
+                <li>
+                    <a href="{{ url_for('gallery') }}">Фотогалерея</a>
+                </li>
                 <li>
                     <a href="{{ url_for('b_log') }}">(Б)лог Рести</a>
                 </li>
                 <li>Генераторы разного
                     <ul class="submenu">
                         <li>
-                            <a href="pages/gradient.html">Градиент</a>
+                            <a href="/pages/gradient.html">Градиент</a>
                         </li>
                         <li>
-                            <a href="pages/tree.html">Деревья</a>
+                            <a href="/pages/tree.html">Деревья</a>
                         </li>
                         <li>
-                            <a href="pages/branch.html">Ветка</a>
+                            <a href="/pages/branch.html">Ветка</a>
                         </li>
                         <!-- <li>
-                            <a href="pages/stars.html">Созвездия</a>
+                            <a href="/pages/stars.html">Созвездия</a>
                         </li> -->
                     </ul>
                 </li>
                 <li>HTML / CSS / JS
-                    <ul class="submenu">
+                    <ul class="submenu left">
                         <li>Кнопки
                             <ul class="submenu">
-                                <li><a href="pages/bubble_button.html">Пузырьки на js</a></li>
+                                <li><a href="/pages/bubble_button.html">Пузырьки на js</a></li>
                             </ul>
                         </li>
-                        <li><a href="pages/digital_clock.html">Часы с переворотом</a></li>
-                        <li><a href="pages/analog_clock.html">Часы стрелочные</a></li>
-                        <li><a href="pages/cube/index.html">Куб</a></li>
-                        <li><a href="pages/ff/index.html">Flappy Fox</a></li>
-                        <li><a href="pages/rain/index.html">Дождь за окном</a></li>
+                        <li><a href="/pages/digital_clock.html">Часы с переворотом</a></li>
+                        <li><a href="/pages/analog_clock.html">Часы стрелочные</a></li>
+                        <li><a href="/pages/cube/index.html">Куб</a></li>
+                        <li><a href="/pages/ff/index.html">Flappy Fox</a></li>
+                        <li><a href="/pages/rain/index.html">Дождь за окном</a></li>
                     </ul>
                 </li>
             </ul>
@@ -85,11 +86,24 @@
             <p class="text-bold">Где ещё можно встретить лиса?</p>
             <hr class="m-small center">
             <p class="m-standart">
-                Telegram: <a class="p-small" href="https://t.me/restyfoss">@restyfoss</a>
+                Telegram:
+                {% if outer_links['telegram_account'] %}
+                <a class="p-small" href="{{ outer_links['telegram_account']['url'] }}">{{ outer_links['telegram_account']['title'] }}</a>
+                {% endif %}
+
                 <span class="red-splitter m-standart"></span>
-                VK: <a class="p-small" href="https://vk.ru/restyfoss">Рестифосс - Красный Лис</a>
+                VK: 
+                {% if outer_links['vk_page'] %}
+                    <a class="p-small" href="{{ outer_links['vk_page']['url'] }}">{{ outer_links['vk_page']['title'] }}</a>
+                {% endif %}
+                
                 <span class="red-splitter m-standart"></span>
-                Discord: <a class="p-small" href="https://discordapp.com/users/754897284260429945">restyfoss</a>
+
+                Discord:
+                {% if outer_links['discord_account'] %}
+                <a class="p-small" href="{{ outer_links['discord_account']['url'] }}">{{ outer_links['discord_account']['title'] }}</a>
+                {% endif %}
+
             </p>
             <hr class="m-small center">
             <p>═╬═ 2026 ═╬═</p>
