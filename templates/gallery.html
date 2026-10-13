@@ -5,26 +5,88 @@
 {% endblock %}
 
 {% block content %}
-
-<h1 class="title text-center">Фотографии</h1>
+<h1 class="title text-center">Фотогалерея</h1>
 <hr class="my-standart">
-<div class="row">
-    {% with imgpath = 'images/compressed/clouds.jpg', imgname = "облк" %}
-        {% include "include_photoframe.html" %}
-    {% endwith %}
-    
-    {% with imgpath = 'images/compressed/clouds.jpg', imgname = "облк" %}
-        {% include "include_photoframe.html" %}
-    {% endwith %}
-    
-    {% with imgpath = 'images/compressed/clouds.jpg', imgname = "облк" %}
-        {% include "include_photoframe.html" %}
-    {% endwith %}
-    
-    {% with imgpath = 'images/compressed/clouds.jpg', imgname = "облк" %}
-        {% include "include_photoframe.html" %}
-    {% endwith %}
+<h3 class="text-center text-italic red-frame my-standart">Мои редкие фотографии</h3>
+<div class="row text-center">
+<!-- облака -->
+{% with image='images/compressed/clouds.jpg', imagename = 'ОБЛАКА' %}
+    {% include "include_photoframe.html" %}
+{% endwith %}
+<!-- камин -->
+{% with image='images/compressed/fire.jpg', imagename = 'камин' %}
+    {% include "include_photoframe.html" %}
+{% endwith %}
+<!-- ромашки -->
+{% with image='images/compressed/flowers.jpg', imagename = 'ромашки' %}
+    {% include "include_photoframe.html" %}
+{% endwith %}
+<!-- букет на земле -->
+{% with image='images/compressed/flowers2.jpg', imagename = 'большой букет' %}
+    {% include "include_photoframe.html" %}
+{% endwith %}
+
+<!-- по дороге домой -->
+{% with image='images/compressed/syberia.jpg', imagename = 'дорога домой' %}
+    {% include "include_photoframe.html" %}
+{% endwith %}
+
+<!-- два цвета -->
+{% with image='images/compressed/red_green_leaves.jpg', imagename = 'два цвета' %}
+    {% include "include_photoframe.html" %}
+{% endwith %}
+<!-- кедр -->
+{% with image='images/compressed/cedar.jpg', imagename = 'Кедр' %}
+    {% include "include_photoframe.html" %}
+{% endwith %}
+<!-- лист -->
+{% with image='images/compressed/leaf.jpg', imagename = 'Сквозь лист' %}
+    {% include "include_photoframe.html" %}
+{% endwith %}
+
+<!-- первый снег -->
+{% with image='images/compressed/first_snow.jpg', imagename = 'первый снег' %}
+    {% include "include_photoframe.html" %}
+{% endwith %}
+<!-- Из окна поезда -->
+{% with image='images/compressed/train_window.jpg', imagename = 'Из окна поезда' %}
+    {% include "include_photoframe.html" %}
+{% endwith %}
+<!-- набережная -->
+{% with image='images/compressed/river.jpg', imagename = 'Набережная' %}
+    {% include "include_photoframe.html" %}
+{% endwith %}
+<!-- вечереет -->
+{% with image='images/compressed/evening.jpg', imagename = 'Вечереет' %}
+    {% include "include_photoframe.html" %}
+{% endwith %}
+
+<!-- пустая рамка для сброса фона -->
+{% with image='', imagename = '' %}
+    {% include "include_photoframe.html" %}
+{% endwith %}
+</div>
+<div class="my-big"></div>
+<h3 class="text-center text-italic red-frame my-standart">Картинки из статей</h3>
+<div class="row text-center">
+    {% for article in articles %}
+        {% include "include_imageframe.html" %}
+    {% endfor %}
 </div>
 
+<script>
+        Array.from(document.body.querySelectorAll('.select-background')).forEach(element => {
+            element.onclick = ()=>{
+                let url = element.querySelector('img').getAttribute('src');
+                if(url){
+                    document.body.querySelector('main').classList.add('bg-mobile-set');
+                }else{
+                    document.body.querySelector('main').classList.remove('bg-mobile-set');
+                }
+                document.body.style.backgroundImage = "url("+url+")";
+            }
+        });
+
+    </script>
 
 {% endblock %}

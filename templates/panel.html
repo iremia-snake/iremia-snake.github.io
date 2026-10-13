@@ -20,7 +20,7 @@
             <tr>
                 <td>{{ l.name }}</td>
                 <!-- <td>{{ l.description }}</td> -->
-                <td><a href="{{ l.link }}">{{ l.url }}</a></td>
+                <td><a style="word-wrap: break-word; display: inline-block; max-width: 300px;" href="{{ l.link }}">{{ l.url }}</a></td>
                 <td>{{ l.title }}</td>
                 <td class="text-center">
                     <h3><a href="{{ url_for('del_link', link_id=l.id) }}" style="text-decoration: none;">✕</a></h3>
@@ -39,7 +39,7 @@
         </table>
     </div>
     <hr class="my-standart">
-    <h4 class="p-small">Список имеющихся имен ссылок</h4>
+    <h4 class="p-small">Список фиксированных имен ссылок</h4>
     <ul>
         <li>telegram_channel</li>
         <li>telegram_account</li>

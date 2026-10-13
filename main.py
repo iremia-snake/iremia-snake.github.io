@@ -63,7 +63,7 @@ def inject_links():
 
 
 # доступ к media
-@app.route('/media/<string:filename>')
+@app.route('/file/<string:filename>')
 def uploaded(filename):
     return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
 
@@ -75,8 +75,7 @@ def index():
     return render_template('index.html')
 
 
-
-# работа с файлами
+# === Сохранить файл на сервер ===
 def save_file(file):
     ext = file.filename[file.filename.rfind('.')+1:]
     if ext in ALLOWED_EXTENSIONS:
@@ -84,7 +83,7 @@ def save_file(file):
         file.save(os.path.join(app.config['UPLOAD_FOLDER'], file.filename))
         return file.filename
 
-
+# === Удалить файл ===
 def delete_file(filename):
     if not filename:
         return
@@ -209,6 +208,8 @@ def logout():
     return redirect(url_for('index'))
 
 
+# === Функции админ панели ===
+
 # Админ-панель
 @app.route('/admin', methods=['get', 'post'])
 @login_required
@@ -232,6 +233,8 @@ def admin():
     ).fetchall()
     return render_template('panel.html', links = links)
 
+
+# Удалить ссылку
 @app.route('/admin/dellink/<int:link_id>')
 @login_required
 def del_link(link_id):
@@ -240,6 +243,7 @@ def del_link(link_id):
     db.commit()
 
     return redirect(url_for('admin'))
+
 
 # === другие страницы ===
 
@@ -252,7 +256,18 @@ def pages(filename):
 # Галерея
 @app.route('/gallery')
 def gallery():
-    return render_template('gallery.html')
+    db = get_db()
+    articles = [i for i in db.execute('SELECT imgpath, title FROM articles').fetchall() if i['imgpath'] != '']
+    return render_template('gallery.html', articles = articles)
+
+# ССылки на офф. сайты
+@app.route('/helpfull-links')
+def helpfull_links():
+    db = get_db()
+    links_drivers = db.execute('SELECT * FROM links WHERE name = "driver"').fetchall()
+    links_programs = db.execute('SELECT * FROM links WHERE name = "program"').fetchall()
+    
+    return render_template('links.html', helpful_links = {'driver':links_drivers, 'program':links_programs})
 
 # Minecraft сервер
 @app.route('/minecraft')

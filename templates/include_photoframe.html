@@ -1,4 +1,8 @@
-<div class="photo-frame light-shadow round-1 select-background">
-    <img src="{{ url_for('static', filename=imgpath) }}" class="image" alt="{{ imgname }}">
-    <div class="photo-title light-shadow round-1 text-capit">{{ imgname }}</div>
+<div class="photo-frame light-shadow round-1 select-background valign-middle">
+    {% if not image %}
+        <img src="" class="image" alt="" height="160">
+    {% else %}
+        <img src="{{ url_for('static', filename=image) }}" class="image" alt="{{ imagename }}">
+        <div class="photo-title light-shadow round-1 text-capit">{{ imagename }}</div>
+    {% endif %}
 </div>

@@ -7,8 +7,9 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='CSS/style.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='CSS/nav.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='CSS/icons.css') }}">
-    <script src="{{ url_for('static', filename='JS/menu.js') }}"></script>
-    <script src="{{ url_for('static', filename='JS/audioplayer.js') }}"></script>
+    <script defer src="{{ url_for('static', filename='JS/menu.js') }}"></script>
+    <script defer src="{{ url_for('static', filename='JS/audioplayer.js') }}"></script>
+    <script defer src="{{ url_for('static', filename='JS/background.js') }}"></script>
     <link rel="shortcut icon" href="{{ url_for('static', filename='images/favicon.png') }}" type="image/x-icon">
     <meta name="description" content="Личная страница фурри лиса по имени Рестифосс (Restyfoss). Сокращенно - Рести. Здесь информация об этом красном лисе и ссылки на места его обитания"/>
     {% block head %}{% endblock %}
@@ -30,18 +31,6 @@
                     </ul>
                 </li>
                 {% endif %}
-                <li>
-                    <a href="/pages/links.html">Ссылки на офф. сайты</a>
-                </li>
-                <li>
-                    <a href="http://cherkaap.beget.tech">Доска (Alpha)</a>
-                </li>
-                <li>
-                    <a href="{{ url_for('gallery') }}">Фотогалерея</a>
-                </li>
-                <li>
-                    <a href="{{ url_for('b_log') }}">(Б)лог Рести</a>
-                </li>
                 <li>Генераторы разного
                     <ul class="submenu">
                         <li>
@@ -58,8 +47,14 @@
                         </li> -->
                     </ul>
                 </li>
+                <li>
+                    <a href="{{ url_for('gallery') }}">Фотогалерея</a>
+                </li>
+                <li>
+                    <a href="{{ url_for('b_log') }}">(Б)лог Рести</a>
+                </li>
                 <li>HTML / CSS / JS
-                    <ul class="submenu left">
+                    <ul class="submenu">
                         <li>Кнопки
                             <ul class="submenu">
                                 <li><a href="/pages/bubble_button.html">Пузырьки на js</a></li>
@@ -70,6 +65,22 @@
                         <li><a href="/pages/cube/index.html">Куб</a></li>
                         <li><a href="/pages/ff/index.html">Flappy Fox</a></li>
                         <li><a href="/pages/rain/index.html">Дождь за окном</a></li>
+                    </ul>
+                </li>
+                <li>Прочее
+                    <ul class="submenu">
+                        <li>
+                            <a href="http://cherkaap.beget.tech">Доска (Alpha)</a>
+                        </li>
+                        <li>
+                            <a href="{{ url_for('helpfull_links') }}">Офф. сайты</a>
+                        </li>
+                        <li>
+                            <a href="/pages/links.html">Полезные ссылки (стар.)</a>
+                        </li>
+                        <li>
+                            <a href="{{ url_for('minecraft') }}">Minecraft сервер</a>
+                        </li>
                     </ul>
                 </li>
             </ul>

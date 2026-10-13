@@ -141,18 +141,4 @@
         <br>
         <br>
         <br>
-    <script>
-        Array.from(document.body.querySelectorAll('.select-background')).forEach(element => {
-            element.onclick = ()=>{
-                let url = element.querySelector('img').getAttribute('src');
-                if(url){
-                    document.body.querySelector('main').classList.add('bg-mobile-set');
-                }else{
-                    document.body.querySelector('main').classList.remove('bg-mobile-set');
-                }
-                document.body.style.backgroundImage = "url("+url+")";
-            }
-        });
-
-    </script>
 {% endblock %}

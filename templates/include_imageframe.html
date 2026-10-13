@@ -1,0 +1,8 @@
+<div class="photo-frame light-shadow round-1 select-background">
+    {% if not article or not  article['imgpath'] %}
+        <img src="" class="image" alt="Изображение не найдено" height="160">
+    {% else %}
+        <img src="{{ url_for('uploaded', filename=article['imgpath']) }}" class="image" alt="Картинка из статьи &quot;{{ article['title'] or ''}}&quot;">
+        <div class="photo-title light-shadow round-1 text-capit">{{ article['title'] }}</div>
+    {% endif %}
+</div>

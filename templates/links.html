@@ -1,0 +1,32 @@
+{% extends 'wrapper.html' %}
+
+{% block content %}
+<h2 class="title text-center">Ссылки на офф. сайты</h2>
+<p class="text-center light-text bg-text-shadow">
+    Ссылки на оффициальные сайты с драйверами, программами и прочего
+</p>
+<hr class="my-standart">
+
+
+<div class="row text-center my-big">
+    
+    <div class="line-half text-left valign-top note p-standart light-shadow round-1">
+        <h3 class="note-header my-standart">Драйвера</h3>
+        {% for l in helpful_links['driver'] %}
+            <div class="text-italic my-small red-frame">
+                <a href="{{ l['url'] }}" style="color: var(--dark-color)">{{ l['title'] }}</a>
+            </div>
+        {% endfor %}
+    </div>
+
+    <div class="line-half text-left valign-top note p-standart light-shadow round-1">
+        <h3 class="note-header my-standart">Программы</h3>
+        {% for l in helpful_links['program'] %}
+            <div class="text-italic my-small red-frame">
+                <a href="{{ l['url'] }}" style="color: var(--dark-color)">{{ l['title'] }}</a>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+    
+{% endblock %}
