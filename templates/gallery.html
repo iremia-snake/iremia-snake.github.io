@@ -8,6 +8,7 @@
 <h1 class="title text-center">Фотогалерея</h1>
 <hr class="my-standart">
 <h3 class="text-center text-italic red-frame my-standart">Мои редкие фотографии</h3>
+<p class="text-center text-italic">Кликнуть по фото, <br> чтобы установить фон страницы</p>
 <div class="row text-center">
 <!-- облака -->
 {% with image='images/compressed/clouds.jpg', imagename = 'ОБЛАКА' %}
@@ -61,8 +62,13 @@
     {% include "include_photoframe.html" %}
 {% endwith %}
 
-<!-- пустая рамка для сброса фона -->
-{% with image='', imagename = '' %}
+<!-- вид на китай в ночи -->
+{% with image='images/compressed/night_china.jpg', imagename = 'Ночной Китай' %}
+    {% include "include_photoframe.html" %}
+{% endwith %}
+
+<!-- пустое фото для сброса фона -->
+{% with image='', imagename = 'Сброс фона' %}
     {% include "include_photoframe.html" %}
 {% endwith %}
 </div>
@@ -74,19 +80,5 @@
     {% endfor %}
 </div>
 
-<script>
-        Array.from(document.body.querySelectorAll('.select-background')).forEach(element => {
-            element.onclick = ()=>{
-                let url = element.querySelector('img').getAttribute('src');
-                if(url){
-                    document.body.querySelector('main').classList.add('bg-mobile-set');
-                }else{
-                    document.body.querySelector('main').classList.remove('bg-mobile-set');
-                }
-                document.body.style.backgroundImage = "url("+url+")";
-            }
-        });
-
-    </script>
 
 {% endblock %}

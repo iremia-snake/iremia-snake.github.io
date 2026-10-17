@@ -1,1 +1,17 @@
-404
+{% extends 'wrapper.html' %}
+
+{% block title %} 404 {% endblock %}
+
+
+{% block content %}
+    <h1 class="text-center title red-frame my-standart" style="font-size: 3em;">
+        \\\ 404 ///
+    </h1>
+    <p class="text-center my-standart text-bold">
+        То, что вы ищете, скрылось в тумане.
+    </p>
+    <p class="text-center my-standart text-italic">Страница по адресу &#8221;<span id="addr" style="font-size: 1.08em;"></span>&#8221; не найдена</p>
+    <script>
+        document.getElementById('addr').innerText = window.location.href
+    </script>
+{% endblock %}
