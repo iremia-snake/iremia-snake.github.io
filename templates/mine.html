@@ -47,7 +47,7 @@
         <img class="server_img" src="{{ url_for('static', filename='images/minecraft/server_image.png') }}" alt="minecraft server image">
     </div>
     <div>
-        <h2 style="color: #f0f0f0;">{{ outer_links['minecraft_server']['url'] }}</h2>
+        <h2 style="color: #f0f0f0;"><a class="no-link" href="{{ outer_links['minecraft_server']['url'] }}">{{ outer_links['minecraft_server']['title'] }}</a></h2>
         <div><span style="color: #FFFF55;">V1.0</span> Добро пожаловать, товарищ,<br>на <span style="color: #55FF55;">Minecraft</span> сервер <span style="color: #FF5555;">Красного Лиса Рести!</span></div>
     </div>
     {% endif %}
